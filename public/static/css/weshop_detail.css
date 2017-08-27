@@ -1,0 +1,489 @@
+html {
+    font-size : 20px;
+    font-family: "Microsoft YaHei UI";
+    overflow-x: hidden;
+}
+/*媒体查询响应适配rem*/
+@media only screen and (min-width: 401px){
+    html {
+        font-size: 25px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 428px){
+    html {
+        font-size: 26.75px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 481px){
+    html {
+        font-size: 30px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 569px){
+    html {
+        font-size: 35px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 641px){
+    html {
+        font-size: 40px !important;
+        overflow-x: hidden;
+    }
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+}
+
+p{
+    margin: 0;
+    padding: 0;
+}
+
+/*页面返回按钮*/
+.page_back{
+    position: absolute;
+    width: 1.7rem;
+    height: 1.7rem;
+    left: 0.2rem;
+    top:0.2rem;
+    z-index: 200;
+}
+
+/*左右滑区域容器*/
+.swiper-container{
+    width: 100%;
+    height: 20rem;
+    background-color: white;
+    font-size: 0.7rem;
+}
+
+.swiper-wrapper{
+    width: 100%;
+    color: whitesmoke;
+}
+
+
+/*商品主要信息展示区*/
+.information_wrap{
+    width: 100%;
+    padding-left: 1%;
+    padding-top: 0.5rem;
+    background-color: white;
+}
+
+.information_name{
+    width: 100%;
+    font-size: 0.8rem;
+    font-family: "Microsoft YaHei UI Light";
+    margin-left: 0.1rem;
+}
+
+.information_price{
+    width: 100%;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.6rem;
+    color: red;
+    font-weight: bold;
+}
+
+.information_extra{
+    width: 100%;
+    font-size: 0.5rem;
+    color: #8a8a8a;
+    padding-bottom: 0.4rem;
+    margin-left: 0.2rem;
+}
+
+
+#information_extra_month{
+    margin-left:4rem;
+}
+
+#information_extra_repertory{
+    float: right;
+    margin-right: 0.5rem;
+}
+
+/*选择尺寸套餐类型*/
+.select_wrap{
+    background-color: white;
+    width: 100%;
+    height: 2rem;
+    border-top: 1px solid #dbdbdb;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.select_text{
+    display: inline-block;
+    height: 2rem;
+    line-height: 2rem;
+    color: #8a8a8a;
+    font-size: 0.7rem;
+    margin-left: 0.3rem;
+}
+
+.select_img{
+    display: inline-block;
+    width: 0.4rem ;
+    float: right;
+    margin-top: 0.3rem;
+    margin-right: 0.4rem;
+}
+
+/*选择套餐展示tab*/
+.select_tab_wrap{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 899;
+    display: none;
+}
+
+.select_tab{
+    width: 100%;
+    height: 100%;
+    background-color: #2e3436;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    -khtml-opacity: 0.5;
+    opacity: 0.5;
+}
+
+/*信息显示总包裹层*/
+.select_main{
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    background-color: white;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/*退出按钮 */
+.select_cancel{
+    position: absolute;
+    top: 0.2rem;
+    right: 0.2rem;
+    width: 1.7rem;
+}
+
+/*tab头部 */
+.select_header{
+    width: 100%;
+    padding: 1rem 0;
+    border-bottom: 1px solid #dbdbdb;
+}
+
+.select_header_img{
+    display: inline-block;
+    width: 3rem;
+    height: 3rem;
+    margin-left: 0.8rem;
+}
+
+.select_header_data{
+    display: inline-block;
+    margin-left: 1.5rem;
+}
+
+.select_header_data_price{
+    color: red;
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+}
+
+.select_header_data_repertory{
+    font-size: 0.7rem;
+    margin-left: 0.1rem;
+}
+
+/*选择内容主体*/
+.select_mainselect{
+    width: 100%;
+    padding: 0.8rem;
+    font-family: "Microsoft YaHei UI";
+}
+
+/*尺寸选择*/
+.select_mainselect_wrap{
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.select_mainselect_text{
+    width: 100%;
+    font-size: 0.7rem;
+    margin-left: 0.3rem;
+}
+
+/*小选项样式*/
+.select_div{
+    font-size: 0.7rem;
+    padding: 0.4rem;
+    margin-top: 0.4rem;
+    margin-left: 0.2rem;
+    display: inline-block;
+    border: 1px solid #dbdbdb;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+}
+
+/*选中样式*/
+.select_div_choose{
+    color: #ff6537;
+    border: 1px solid #ff6537;
+}
+
+/*购买数量*/
+.select_num{
+    width: 100%;
+    padding: 0.8rem;
+    border-top: 1px solid #dbdbdb;
+}
+
+.select_num p{
+    display: inline-block;
+    font-size: 0.7rem;
+}
+
+.select_num_wrap{
+    display: inline-block;
+    float: right;
+    margin-right: 1rem;
+}
+
+.select_num_add{
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid red;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;
+    color: red;
+
+}
+
+.select_num_num{
+    display: inline-block;
+    margin: 0 1rem;
+}
+
+.select_num_minus{
+    display: inline-block;
+    display: inline-block;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #dbdbdb;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px
+}
+
+.select_num_minus_reduce{
+    border: 1px solid red;
+    color: red;
+}
+
+/*tab模块底部*/
+.select_footer_wrap{
+    width: 100%;
+    height: 2rem;
+    background-color: #44b549;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+.select_footer_addcart{
+    display: inline-block;
+    width: 49%;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    background-color: #ff6537;
+    color: whitesmoke;
+}
+
+.select_footer_buynow{
+    display: inline-block;
+    width: 49%;
+    height: 2rem;
+    line-height: 2rem;
+    text-align: center;
+    background-color: #44b549;
+    color: whitesmoke;
+}
+
+/*商品评价模块*/
+.product_evaluate_wrap{
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid #dbdbdb;
+    height: auto;
+    margin-top: 0.5rem;
+    padding-left: 0.4rem;
+    padding-top: 0.4rem;
+}
+
+.product_evaluate_header{
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    font-family: "Microsoft YaHei UI Light";
+}
+
+.evaluate_header{
+    font-size: 0.7rem;
+    width: 100%;
+    height: 1rem;
+}
+
+.evaluate_header img{
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    -webkit-border-radius:50%;
+    -moz-border-radius:50%;
+    border-radius:50%;
+}
+
+.evaluate_header p{
+    display: inline-block;
+    line-height: 1rem;
+    height: 1rem;
+    position: relative;
+    bottom: 0.25rem;
+}
+
+.evaluate_text{
+    width: 100%;
+    margin-top: 0.5rem;
+    font-size: 0.7rem;
+}
+
+.evaluate_information{
+    width: 100%;
+    margin-top: 0.3rem;
+    font-size: 0.6rem;
+    color: #8a8a8a;
+}
+
+/*查看全部评论按钮*/
+.product_evaluate_button_wrap{
+    width: 100%;
+    height: 3.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product_evaluate_button{
+    width: 5.4rem;
+    height: 1.3rem;
+    line-height: 1.3rem;
+    font-size: 0.7rem;
+    border: 1px solid #0fc966;
+    color: #0fc966;
+    text-align: center;
+}
+
+/*商品详情*/
+.product_introduce_wrap{
+    width: 100%;
+    background-color: white;
+    margin-top: 0.5rem;
+    padding-left: 0.2rem;
+    margin-bottom: 3rem;
+}
+
+.product_introduce_header{
+    width: 100%;
+    margin-top: 0.1rem;
+}
+
+.product_introduce_select{
+    display: inline-block;
+    float: left;
+    width: 50%;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    font-size: 0.7rem;
+    border-bottom: 5px solid white;
+}
+
+.introduce_select{
+    border-bottom: 5px solid #0fc966;
+    color: #0fc966;
+}
+
+/*产品参数*/
+.product_data{
+    display: none;
+}
+
+/*商品详情底部*/
+footer{
+    width: 100%;
+    height: 3rem;
+    background-color: white;
+    position: fixed;
+    z-index: 800;
+    bottom: 0;
+    left: 0;
+}
+
+.footer{
+    display: inline-block;
+    width: 25%;
+    float: left;
+    font-size: 0.6rem;
+}
+
+.flex_wrap{
+    width: 100%;
+    height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cart_collect_wrap img{
+    width: 1rem;
+    height: 1rem;
+    margin-left: 0.1rem;
+}
+
+#footer_cart_wrap{
+    margin-left: 0.25rem;
+}
+
+.footer_right{
+    text-align: center;
+    height: 3rem;
+    line-height: 3rem;
+    color: white;
+}
+
+#footer_joincart{
+    font-size: 0.7rem;
+    background-color: #ff6537;
+}
+
+#footer_buy{
+    font-size: 0.7rem;
+    background-color: #44b549;
+}
+

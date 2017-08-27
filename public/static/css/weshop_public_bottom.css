@@ -1,0 +1,114 @@
+html {
+    font-size : 20px;
+    font-family: "Microsoft YaHei UI";
+    overflow-x: hidden;
+}
+/*媒体查询响应适配rem*/
+@media only screen and (min-width: 401px){
+    html {
+        font-size: 25px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 428px){
+    html {
+        font-size: 26.75px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 481px){
+    html {
+        font-size: 30px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 569px){
+    html {
+        font-size: 35px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 641px){
+    html {
+        font-size: 40px !important;
+        overflow-x: hidden;
+    }
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+}
+
+/*尾部*/
+footer{
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    height: 3rem;
+    background-color: white;
+    bottom: 0;
+    left: 0;
+}
+
+.nav_wrap{
+    width: 23.6%;
+    height: 100%;
+    display: inline-block;
+    font-size: 0.5rem;
+    font-family: "Microsoft YaHei UI Light";
+}
+
+.nav_flex{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav_box{
+    width: 2.5rem;
+}
+
+.nav_img{
+    width: 55%;
+    margin-left: 0.6rem;
+}
+
+.nav_text{
+    width: 100%;
+    text-align: center;
+}
+
+#nav_cart_img{
+    margin-left: 0.4rem;
+}
+
+
+/*包裹层flex定位垂直居中*/
+.flex{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*copyright样式*/
+.copyright_wrap{
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.copyright{
+    width: 100%;
+    margin-top: 1.5rem;
+    height: 2rem;
+    font-size: 0.6rem;
+    text-align: center;
+}

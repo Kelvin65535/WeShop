@@ -1,0 +1,180 @@
+html {
+    font-size : 20px;
+    font-family: "Microsoft YaHei UI";
+    overflow-x: hidden;
+}
+/*媒体查询响应适配rem*/
+@media only screen and (min-width: 401px){
+    html {
+        font-size: 25px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 428px){
+    html {
+        font-size: 26.75px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 481px){
+    html {
+        font-size: 30px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 569px){
+    html {
+        font-size: 35px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 641px){
+    html {
+        font-size: 40px !important;
+        overflow-x: hidden;
+    }
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f3f3f3;
+    overflow-x: hidden;
+}
+
+p{
+    margin: 0;
+    padding: 0;
+}
+
+/*总包裹层*/
+.cart_mainwarp{
+    width: 100%;
+}
+
+/*店铺模板层*/
+.cart_shopwarp{
+    width: 100%;
+    background-color: white;
+    border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 1rem;
+}
+
+/*店铺头部*/
+.cart_shop_head{
+    width: 100%;
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.cart_shop_head_choose{
+    width: 1rem;
+    height: 1rem;
+    margin: 0 0.5rem;
+}
+
+.cart_shop_head_img{
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+}
+
+.cart_shop_head_text{
+    font-size: 0.8rem;
+    height: 100%;
+    line-height: 1rem;
+}
+
+/*店铺商品展示*/
+.cart_shop_product{
+    width: 100%;
+    padding: 0.3rem 0;
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7;
+    margin-top: 0.2rem;
+}
+
+.cart_shop_product_choose{
+    width: 1rem;
+    height: 1rem;
+    margin: 0 0.5rem;
+}
+
+
+.cart_shop_product_img{
+    width: 3rem;
+    height: 3rem;
+}
+.cart_shop_product_detail{
+    font-size: 0.6rem;
+    margin-left: 0.5rem;
+    width: 60%;
+}
+
+.cart_shop_product_detail_name{
+    margin-bottom: 0.5rem;
+}
+
+.cart_shop_product_detail_type{
+    color: #ccc;
+    margin-bottom: 0.5rem;
+    font-size: 0.5rem;
+}
+
+.cart_shop_product_detail_price{
+    display:inline-block;
+    color: #ff3300;
+}
+
+.cart_shop_product_detail_num{
+    display: inline-block;
+    float: right;
+}
+
+/*结算div*/
+.cart_account_wrap{
+    width: 100%;
+    height: 3rem;
+    position: fixed;
+    z-index: 999;
+    bottom: 3rem;
+    background-color: white;
+    border-top: 1px solid #e7e7e7;
+    border-bottom:1px solid #e7e7e7 ;
+    display: flex;
+    align-items: center;
+    font-size: 0.7rem;
+}
+.cart_account_choose{
+    width: 1rem;
+    height: 1rem;
+    margin: 0 0.5rem;
+}
+
+.cart_account_all{
+    margin-left: 2.4rem;
+}
+
+.cart_account_price{
+    color: #ff3300;
+}
+
+.cart_account_carrige{
+    color: #cccccc;
+    font-size: 5px;
+    margin-left: 0.4rem;
+    float: right;
+}
+
+.cart_account_button{
+    width: 25%;
+    height: 3rem;
+    line-height: 3rem;
+    color: whitesmoke;
+    text-align: center;
+    background-color: #0fc966;
+    position: absolute;
+    right: 0;
+}

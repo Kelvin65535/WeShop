@@ -1,0 +1,267 @@
+html {
+    font-size : 20px;
+    font-family: "Microsoft YaHei UI";
+    overflow-x: hidden;
+}
+/*媒体查询响应适配rem*/
+@media only screen and (min-width: 401px){
+    html {
+        font-size: 25px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 428px){
+    html {
+        font-size: 26.75px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 481px){
+    html {
+        font-size: 30px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 569px){
+    html {
+        font-size: 35px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 641px){
+    html {
+        font-size: 40px !important;
+        overflow-x: hidden;
+    }
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+}
+/*总包裹层*/
+#wrap{
+    width: 100%;
+    padding-bottom: 3rem;
+}
+
+/*头部样式*/
+header{
+    width: 100%;
+    height: 8rem;
+    background-color: #0fc966;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#header_background{
+    width: 4rem;
+    height: 6rem;
+    margin-right: 0.7rem;
+}
+
+#head_img{
+    width: 100%;
+    height: 4rem;
+}
+
+/*图片以圆形显示*/
+#head_img img{
+    border-radius: 50%;
+    border: 4px solid white;
+}
+
+#head_name{
+    width: 100%;
+    padding-top: 1rem;
+    font-size: 0.9rem;
+    padding-left: 0.3rem;
+    color: white;
+    text-align: center;
+}
+
+/*用户功能数据区数据*/
+/*大div*/
+#user_data{
+    width: 100%;
+    height: 3.5rem;
+    border-bottom: 1px solid #eee;
+    padding: 4px 0;
+    background-color: white;
+}
+
+/*数据区一层包裹实现div一行显示*/
+.user_wrap{
+    display: inline-block;
+    width: 31.7%;
+    height: 100%;
+}
+
+/*实现以灰色边框分隔几种功能*/
+#user_discount{
+    border-left:1px solid #eee;
+    border-right:1px solid #eee ;
+}
+
+/*数据区二层包裹实现flex定位*/
+.data_wrap{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.data_box{
+    width: 5rem;
+}
+
+.user_data{
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #2e6da4;
+}
+
+.user_text{
+    width: 100%;
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+}
+
+/*订单状态管理*/
+/*大包裹层数据配置*/
+#order_wrap{
+    width: 100%;
+    height: 7rem;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    margin-top: 0.6rem;
+}
+
+/*我的订单*/
+#myorder_wrap{
+    width: 100%;
+    height: 2rem;
+    padding: 0.25rem;
+    border-bottom: 1px solid #eee;
+    border-top:1px solid #eee;
+}
+
+#myorder_text{
+    display: inline-block;
+    font-size: 0.8rem;
+    margin-left: 0.45rem;
+    height: 2rem;
+    line-height: 2rem;
+}
+
+#myorder_checkall{
+    display: inline-block;
+    position: relative;
+    float: right;
+    font-size: 0.6rem;
+    height: 2rem;
+    line-height: 2rem;
+    margin-right: 1.7rem;
+}
+
+#myorder_checkall_img{
+/*    display: inline-block;
+    margin-left: 0.4rem;*/
+    position: absolute;
+    bottom: 1.1rem;
+    left: 5.2rem;
+    width: 0.5rem;
+    height: 0.8rem;
+}
+
+
+/*订单状态*/
+/*大包裹层*/
+#state_wrap{
+    width: 100%;
+    height: 5rem;
+}
+
+/*各个选项小div通用样式配置*/
+.state_wrap{
+    width: 18.5%;
+    height: 100%;
+    display: inline-block;
+    font-size: 0.5rem;
+    font-family: "Microsoft YaHei UI Light";
+}
+
+.state_flex{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.state_box{
+    width: 3rem;
+}
+
+.state_img{
+    width: 50%;
+    margin-left: 0.8rem;
+}
+
+.state_text{
+    width: 100%;
+    text-align: center;
+}
+
+/*我的收藏*/
+#collect_wrap{
+    width: 100%;
+    height: 2rem;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    border-top: 1px solid #eee;
+    margin-top: 0.6rem;
+    position: relative;
+}
+
+#collect_wrap div{
+    display: inline-block;
+}
+
+#collect_first_img{
+    width: 1.5rem;
+    position: absolute;
+    top: 0.2rem;
+    left: 0.4rem;
+}
+
+#collect_first_text{
+    margin-left: 2.2rem;
+    font-size: 0.8rem;
+    height: 2rem;
+    line-height: 2rem;
+}
+
+#collect_second_text{
+    float: right;
+    height: 2rem;
+    line-height: 2rem;
+    right: 2rem;
+    font-size: 0.6rem;
+    margin-right: 1.5rem;
+}
+
+#collect_second_img{
+    width: 0.5rem;
+    height: 0.8rem;
+    position: absolute;
+    right: 0.3rem;
+    top: 0.4rem;
+}

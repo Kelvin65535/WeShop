@@ -1,0 +1,209 @@
+html {
+    font-size : 20px;
+    font-family: "Microsoft YaHei UI";
+    overflow-x: hidden;
+}
+/*媒体查询响应适配rem*/
+@media only screen and (min-width: 401px){
+    html {
+        font-size: 25px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 428px){
+    html {
+        font-size: 26.75px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 481px){
+    html {
+        font-size: 30px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 569px){
+    html {
+        font-size: 35px !important;
+        overflow-x: hidden;
+    }
+}
+@media only screen and (min-width: 641px){
+    html {
+        font-size: 40px !important;
+        overflow-x: hidden;
+    }
+}
+
+body{
+    margin: 0;
+    padding: 0;
+    background-color: #f7f7f7;
+    overflow-x: hidden;
+}
+
+/*总包裹层*/
+#wrap{
+    width: 100%;
+    padding-bottom: 3rem;
+}
+
+/*头部*/
+/*轮播图选择*/
+#banner_count{
+    background: none;
+    position: absolute;
+    margin: 38% 0 0 67%;
+}
+
+#banner_count ul{
+    background: none;
+}
+
+#banner_count ul li{
+    float: left;
+    background: none;
+    list-style-type: none;
+}
+
+#banner_count ul li img{
+    background: none;
+}
+
+/*头部图片*/
+header{
+    width: 100%;
+    position: relative;
+    background-color: white;
+    padding-bottom: 0.2rem;
+}
+
+.swiper-container{
+    width: 100%;
+    height: 10rem;
+}
+
+
+/*顶部图片*/
+#header_img{
+    width: 100%;
+}
+
+/*活动菜单*/
+#search_active{
+    width: 95%;
+    margin: 2%;
+}
+
+.search_active{
+    display: inline-block;
+    width: 18%;
+    margin-left: 7%;
+}
+
+/*第一个框体*/
+#search_active_first{
+    margin-left: 0;
+}
+
+.search_active_text{
+    font-size: 0.65rem;
+    text-align: center;
+    margin-top: 0.1rem;
+}
+
+
+/*搜索框体位置*/
+#search_wrap{
+    width: 94.5%;
+    height: 1.5rem;
+    background-color: white;
+    border-radius: 1px;
+    border: 1px solid #0fc966;
+    margin-left: 2%;
+    margin-top: 1rem;
+    margin-bottom: 0.2rem;
+}
+
+#search_mrror{
+    width: 5%;
+    display: inline-block;
+    position: relative;
+    left: 0.3rem;
+    top: 0.2rem;
+}
+
+/*输入框样式*/
+#search_input_wrap{
+    width: 70%;
+    display: inline-block;
+    position: relative;
+    left: 0.8rem;
+}
+
+#search_input_wrap form{
+    width: 100%;
+}
+
+#search_input_wrap form input[type="search"]{
+    border: none;
+    font-size: 0.7rem;
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
+/*推荐部分样式*/
+#recommend{
+    width: 100%;
+    background-color: white;
+}
+
+.recommend{
+    width: 100%;
+}
+
+.recommend p{
+    margin: 0;
+}
+
+.recommend_wrap_show{
+    width: 45%;
+    margin: 0.6rem 2%;
+    border:1px solid #f3f3f3 ;
+    display: inline-block;
+    float: left;
+}
+
+.recommend_wrap{
+    width: 45%;
+    margin-left: 2%;
+    margin-right: 2%;
+    border:1px solid #f3f3f3 ;
+    display: inline-block;
+}
+
+.recommend_img{
+    width: 100%;
+    display: block;
+}
+
+.recommend_name{
+    width: 100%;
+    height: 2rem;
+    font-size: 0.8rem;
+    overflow: hidden;
+}
+
+.recommend_price{
+    width: 100%;
+    font-size: 0.8rem;
+    color: red;
+}
+
+/*广告部分*/
+#ad{
+    width: 100%;
+    padding-top: 1rem;
+    background-color: white;
+}
