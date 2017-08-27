@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>产品分类</title>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8" />
+    <title>{$title} - {$settings.shopname}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <link href="{$docroot}public/static/css/wshop/wshop_view_category.css" type="text/css" rel="Stylesheet" />
+
+    <link href="{$docroot}public/static/css/weshop_public_bottom.css" rel="stylesheet" type="text/css">
+</head>
+
+<body style="overflow:hidden;padding:0;-webkit-overflow-scrolling: none;">
+
+<input type="hidden" value="{$searchkey}" id="searchkey" />
+<input type="hidden" value="{$cat}" id="cat" />
+<input type="hidden" value="{$serial_id}" id="serial_id" />
+<input type="hidden" value="{$orderby}" id="orderby" />
+
+
+<div class="clearfix" id="viewCat">
+    <div id="viewCatLeft">
+        <div class="viewCatTopItem Elipsis" data-catid="-1">一周新品</div>
+        <div class="viewCatTopItem Elipsis" data-catid="-2">一周热搜</div>
+        {/*
+        <div class="viewCatTopItem Elipsis" data-catid="-3">品牌专卖</div>
+        */}
+        {volist name="topcat" id="tc"}
+        <div class="viewCatTopItem Elipsis" data-catid="{$tc.cat_id}">{$tc.cat_name}</div>
+        {/volist}
+    </div>
+    <div id="viewCatRight"></div>
+</div>
+<script data-main="{$docroot}public/static/script/weshop/shop_vcategory.js" src="http://apps.bdimg.com/libs/require.js/2.1.9/require.min.js"></script>
+
+
+<script language='javascript' src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'> </script>
+{include file="global/nav_bottom" /}
+
+
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>what the fuck</title>
+    <!--link href="{$docroot}public/static/css/weshop_index.css" rel="stylesheet" type="text/css"-->
+</head>
+<body>
+    <p>您选择的商品ID号为：{$product.product_id}</p>
+    <p>商品名称：{$product.product_name}</p>
+    <p>商品简称：{$product.product_subname}</p>
+    <p>============商品信息==============</p>
+    <p>商品简介：{$product.product_subtitle}</p>
+    <p>商品大小：{$product.product_cat}</p>
+    <p>商品重量：{$product.product_weight}</p>
+    <p>商品产地：{$product.product_origin}</p>
+    <p>商品储存条件：{$product.product_storage}</p>
+    <p>商品单位：{$product.product_unit}</p>
+    <p>商品快递费用：{$product.product_expfee}</p>
+    <p>商品分类搜索索引：{$product.product_indexes}</p>
+    <p>============商品价格==============</p>
+    <p>商品市场价：{$product.market_price}</p>
+    <p>商品零售价：{$product.sale_prices}</p>
+    <p>商品折扣比例：{$product.product_prom_discount} 折</p>
+    <p>商品秒杀价 = 零售价 * 折扣比例：{php}echo ($product['sale_prices'] * ($product['product_prom_discount'] / 100));{/php}</p>
+    <p>============规格信息==============</p>
+    {volist name="product['specs']" id="item"}
+    <p>第 {$item.id} 项规格信息：</p>
+    <p>主规格名称：{$item.name1}</p>
+    <p>子规格名称：{$item.name2}</p>
+    <p>市场价：{$item.market_price}</p>
+    <p>售价：{$item.sale_price}</p>
+    <p>库存量：{$item.instock}</p>
+    {/volist}
+    <p>============商家信息==============</p>
+    <p>TODO</p>
+    <p>============商品图片==============</p>
+    {volist name="product['images']" id="item"}
+        <p>第 {$item.image_id} 张图片路径：</p>
+        <p>{$item.image_path}</p>
+        <p>图片如下：</p>
+        <img src="{$item.image_path}">
+    {/volist}
+    <p>============商品详情==============</p>
+    {$product.product_desc}
+
+</div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="global/meta" /}
+    <title>嘉永商城-个人中心</title>
+    <link href="{$docroot}public/static/css/weshop_home.css" rel="stylesheet" type="text/css">
+    <link href="{$docroot}public/static/css/weshop_public_bottom.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div id="wrap">
+        <header>
+            <!--头部-->
+            <div id="header_background">
+                <!--用户头像-->
+                <div id="head_img">
+                    <img src="{$userinfo.client_head}/132" width="100%" height="100%">
+                </div>
+
+                <!--用户昵称-->
+                <div id="head_name">
+                    {$userinfo.client_name}
+                </div>
+            </div>
+        </header>
+
+        <!--用户数据栏-->
+        <div id="user_data">
+            <!--用户积分数-->
+            <div id="user_score" class="user_wrap">
+                <div class="data_wrap">
+                    <div class="data_box">
+                        <div id="score_num" class="user_data">
+                            <!--积分数   -->
+                            0
+                        </div>
+
+                        <div id="score_text" class="user_text">
+                            积分
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--用户优惠券数量-->
+            <div id="user_discount" class="user_wrap">
+                <div class="data_wrap">
+                    <div class="data_box">
+                        <div id="discount_num"  class="user_data">
+                            <!--优惠券数-->
+                            0
+                        </div>
+
+                        <div id="discount_text" class="user_text">
+                            优惠券
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--用户收藏数-->
+            <div id="user_collect" class="user_wrap">
+                <div class="data_wrap">
+                    <div class="data_box">
+                        <div id="collect_num" class="user_data">
+                            <!--收藏数-->
+                            0
+                        </div>
+
+                        <div id="collect_text" class="user_text">
+                            收藏
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--订单状态显示-->
+        <div id="order_wrap">
+            <!--我的订单-->
+            <div id="myorder_wrap">
+                <div id="myorder_text">
+                    我的订单
+                </div>
+
+                <div id="myorder_checkall">
+                    查看全部已购宝贝
+                    <div id="myorder_checkall_img">
+                        <img src="{$docroot}public/static/images/weshop/icon_bar-right.png" width="100%" height="100%">
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="state_wrap">
+                <!--订单查询的五种操作-->
+                <!--待付款-->
+                <div class="state_wrap">
+                    <div class="state_flex">
+                        <div class="state_box">
+                            <div id="state_prepay_img" class="state_img">
+                                <img src="{$docroot}public/static/images/weshop/prepay.svg" width="100%" height="100%">
+                            </div>
+
+                            <div id="state_prepay_text" class="state_text">
+                                待付款
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--待发货-->
+                <div class="state_wrap">
+                    <div class="state_flex">
+                        <div class="state_box">
+                            <div id="state_presend_img" class="state_img">
+                                <img src="{$docroot}public/static/images/weshop/presend.svg" width="100%" height="100%">
+                            </div>
+
+                            <div id="state_presend_text" class="state_text">
+                                待发货
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--待收货-->
+                <div class="state_wrap">
+                    <div class="state_flex">
+                        <div class="state_box">
+                            <div id="state_preget_img" class="state_img">
+                                <img src="{$docroot}public/static/images/weshop/preget.svg" width="100%" height="100%">
+                            </div>
+
+                            <div id="state_preget_text" class="state_text">
+                                待收货
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--待评价-->
+                <div class="state_wrap">
+                    <div class="state_flex">
+                        <div class="state_box">
+                            <div id="state_preevaluate_img" class="state_img">
+                                <img src="{$docroot}public/static/images/weshop/preevaluate.svg" width="100%" height="100%">
+                            </div>
+
+                            <div id="state_preevaluate_text" class="state_text">
+                                待评价
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--退款/售后-->
+                <div class="state_wrap">
+                    <div class="state_flex">
+                        <div class="state_box">
+                            <div id="state_back_img" class="state_img">
+                                <img src="{$docroot}public/static/images/weshop/back.svg" width="100%" height="100%">
+                            </div>
+
+                            <div id="state_back_text" class="state_text">
+                                售后
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--我的收藏-->
+        <div id="collect_wrap">
+            <div id="collect_first_img">
+                <img src="{$docroot}public/static/images/weshop/collect.svg" width="100%" height="100%">
+            </div>
+
+            <div id="collect_first_text">
+                我的收藏
+            </div>
+
+            <div id="collect_second_text">
+                我喜欢，我收藏
+            </div>
+
+            <div id="collect_second_img">
+                <img src="{$docroot}public/static/images/icon_bar-right.png" width="100%" height="100%">
+            </div>
+        </div>
+    </div>
+
+    <script language='javascript' src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'> </script>
+    <!--页面尾部-->
+    {include file="global/nav_bottom" /}
+
+    <script>
+        $(function () {
+            //我的订单
+            $("#myorder_wrap").bind('touchend',function () {
+                self.location = "http://yejiayong.cn/weshop/Order/orderList";
+            });
+            //我的收藏
+            $("#collect_wrap").bind('touchend', function () {
+                self.location = "http://yejiayong.cn/weshop/Usercenter/productLikes";
+            })
+        })
+
+    </script>
+</body>
+</html>

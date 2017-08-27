@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>商品分类查找</title>
+    {include file="global/meta" /}
+    <link href="{$docroot}public/static/css/weshop_home.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+<!--页面尾部-->
+{include file="global/nav_bottom" /}
+
+<script language='javascript' src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'> </script>
+<script type="text/javascript">
+    $(function () {
+        var file = ['index','select','cart','my'],
+            path = ['../index/index.html','../product/view_category.html','../order/cart.html','../usercenter/home.html'];
+
+        $("#nav_"+file[0]+"").bind('click',function () {
+            self.location=path[0]
+        });
+        $("#nav_"+file[1]+"").bind('click',function () {
+            self.location=path[1]
+        });
+        $("#nav_"+file[2]+"").bind('click',function () {
+            self.location=path[2]
+        });
+        $("#nav_"+file[3]+"").bind('click',function () {
+            self.location=path[3]
+        });
+    })
+</script>
+</body>
+</html>

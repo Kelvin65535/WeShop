@@ -1,0 +1,224 @@
+API列表
+购物车
+
+1. 新增到购物车（新建或增加商品）
+POST：<商城根目录地址>weshop/Cart/set
+data: 
+product_id:商品ID
+spec_id:规格ID
+count:数量
+返回json：
+code:成功为0，失败为-1
+msg:字符串，成功为“success”，失败为“failed”
+注释：当购物车没有当前id的商品时新建一条表示count数量的条目，
+若已有条目则为该条目count值增加传入的count数
+
+2. 新增到购物车（设置定值）
+POST：<商城根目录地址>weshop/Cart/set
+data：
+product_id:商品ID
+spec_id:规格ID
+count:数量
+fixed：true，fixed为true代表为当前id的商品设置给定数量的值
+返回json：
+code:成功为0，失败为-1
+msg:字符串，成功为“success”，失败为“failed”
+注释：无论购物车有没有当前id商品的条目均设定count值
+
+3. 获取购物车数据
+POST：<商城根目录地址>weshop/Cart/get
+返回json：
+{
+	"total":购物车的总商品量
+	"supps":
+	[
+		{"supp_id":0, "supp_name":暂定为商店名称, "supp_phone":暂定为null, "cart_datas":
+		    [
+			    {"product_id":商品id,"spec_id":规格id,"count":购物车数量,"product_supplier":供货商id,"sale_price":售价,"market_price":市场价,"instock":库存,"cating":商品缩略图地址(未完成),"spec_name":规格名称,"product_weight":商品重量}
+		    ]
+		}
+	]
+}
+注释：
+supps数组下列的表示不同供应商的商品，目前暂时只有一个供应商（即本店），后续会加入更多的供应商
+supp_name为供货商名称，supp_phone为电话，cart_data数组为当前供货商下的商品
+示例：
+{
+    "total":1,
+    "supps":
+        [
+            {"supp_id":0,"supp_name":"微信商城","supp_phone":null,"cart_datas":
+                [
+                    {"product_name":"商品名称","product_supplier":0,"product_weight":0,"catimg":null,"product_id":1,"spec_id":1,"count":1,"market_price":0,"instock":100,"specname":"规格项1(规格1子规格1)"}
+                ]
+            }
+        ]
+}
+
+4. 从购物车中删除指定id的商品
+POST：<商城根目录地址>weshop/Cart/del
+data：
+product_id:商品ID
+spec_id:规格ID
+count:该商品要减少的数量（若count多于条目中记录的数量则将条目删除）
+all:若true则将该商品条目删除，否则不写这个值
+返回json：
+code:成功为0，失败为-1
+msg:字符串，成功为“success”，失败为“failed”
+
+
+5. 清空购物车
+POST：{$docroot}Cart/clear
+返回json：
+code:成功为0，失败为-1
+msg:字符串，成功为“success”，失败为“failed”
+
+6. 返回购物车商品数量
+GET：{$docroot}Cart/count
+返回count值
+示例：
+1
+
+update: 2017-02-25
+
+地址
+1. 新建用户地址
+POST：<商城根目录地址>weshop/Order/ajaxSetAddress
+data:
+name: 姓名（必填）
+phone: 电话（必填）
+province: 省
+city: 市
+dist: 区
+addrs: 详细地址
+postcode: 邮政编码
+返回json：
+code：成功为0，失败为-1
+msg：字符串，成功为"success"，错误为错误信息
+注释：
+该方法会从当前session中获取用户的openid和uid
+
+2. 获取用户地址
+GET: <商城根目录地址>weshop/Order/ajaxGetAddress
+返回json：
+成功获取时：
+{
+  "code": 0,
+  "msg": [ 包含用户地址的数组，每条目详细如下：
+    {
+      "id": 该条目的数据库唯一id,
+      "uid": 用户uid,
+      "name": 姓名,
+      "phone": 电话,
+      "province": 省,
+      "city": 市,
+      "dist": 区,
+      "addrs": 详细地址,
+      "postcode": 邮政编码
+    }
+  ]
+}
+获取失败时：
+{
+  "code": -1,
+  "msg": 错误信息
+}
+示例：
+{
+  "code": 0,
+  "msg": [
+    {
+      "id": "1",
+      "uid": "2",
+      "name": "叶嘉永",
+      "phone": "18819258367",
+      "province": "广东省",
+      "city": "广州市",
+      "dist": "天河区",
+      "addrs": "华南农业大学",
+      "postcode": "510000"
+    }
+  ]
+}
+注释：
+该方法会从当前session中获取用户的openid和uid
+
+3. 删除指定id的用户地址
+POST：<商城根目录地址>weshop/Order/ajaxDelAddress
+data:
+id：要删除的地址的唯一id（该id可从ajaxGetAddress的条目中获得）
+返回json：
+成功删除时：{"code": 0, "msg": success}
+删除失败时：{"code": -1, "msg": 错误信息}
+注释：
+该方法会从当前session中获取用户的openid和uid
+
+订单：
+1. 新建订单
+POST: <商城根目录地址>weshop/Order/ajaxCreateOrder
+data:
+{
+  "addrData": 订单地址信息，包含以下格式的信息
+  {
+    "userName": 姓名
+    "telNumber": 电话
+    "postalCode": 邮政编码
+    "Province": 省
+    "City": 市
+    "Address": 详细地址
+  }
+  "remark": 订单留言,
+  "expfee": 邮费,
+  "exptime": 配送时间,
+  "cartData": 待结算商品信息，为数组结构，包括以下格式的商品信息
+  [
+    {
+      "cart_id": 可选项，若填写该id则从购物车中移除该id的商品条目,若该项不包含该条目，则仅对下列的商品信息进行结算
+      "pid": 必填，商品ID
+      "spid": 必填，商品规格ID
+      "count": 必填，商品数量
+    }
+  ]
+}
+返回json：
+成功创建订单：{"code": 0, "msg": 创建的订单ID}
+创建订单失败时：{"code": -1, "msg": 错误信息}
+注释：
+若cartData数组条目中包含了cart_id变量，则系统将删除该变量对应的用户购物车数据条目，仅对数据库有效，不对post变量产生影响
+
+2. 发起微信支付统一下单请求
+POST: <商城根目录地址>weshop/Order/ajaxGetBizPackage
+data：
+orderId：从新建订单处获得的订单ID
+返回json：
+成功时返回：
+{
+    "appId": 公众号ID,
+    "timestamp"：支付签名时间戳,
+    "nonceStr"：16位的支付签名随机字符串,
+    "package"：统一支付接口返回的prepay_id参数值，值格式如：prepay_id=***,
+    "signType"：签名方式，默认MD5,
+    "paySign"：支付签名,
+}
+失败时返回空值
+
+update: 2017-02-27
+商品收藏：
+1. 更改商品收藏状态
+POST: <商城根目录地址>weshop/Product/ajaxAlterProductLike
+data:
+id:要更改商品收藏状态的商品ID号，若要增加收藏则id = 商品id，移除收藏状态则id = 商品id的倒数
+返回json：
+成功时返回：{"code": 0}
+失败时返回：{"code": -1}
+注释：
+id的使用示例：若要将id为1的商品加入收藏，则id值设置为1；若要将id为1的商品移除收藏，则id设置为-1
+
+2. 获取特定商品的收藏状态
+POST: <商城根目录地址>weshop/Product/checkLike
+data:
+id：要查询状态的商品ID号
+返回json：
+若商品在收藏列表中：{"code": 0}
+若不在收藏列表或查询失败：{"code": -1}
+

@@ -1,0 +1,17 @@
+{include file='mainpage/header' /}
+<i id="scriptTag">page_list_customers</i>
+<div class="clearfix">
+    <div id="categroys" style="padding:0;width:150px;">
+        <div style="margin-top:45px;">
+            {foreach name="group" item="g" key="k"}
+            <div data-id="{$g.id}" class="list-user-group-item Elipsis{eq name="k" value="0"} selected{/eq}">
+                {$g.level_name}<em>({$g.count})</em>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+    <div id="cate_settings" style="margin-left:150px;">
+        <iframe id="iframe_customer" src="" style="display: block;" width="100%" frameborder="0"></iframe>
+    </div>
+</div>
+{include file='mainpage/footer' /}

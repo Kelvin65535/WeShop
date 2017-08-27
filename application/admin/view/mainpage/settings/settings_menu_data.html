@@ -1,0 +1,19 @@
+{volist name="menu['button']" id="m"}
+<div class="tMenus">
+    <div class="menutop" data-name="{present name="m['name']"}{$m.name}{/present}" data-type="{present name="m['type']"}{$m.type}{/present}" data-url="{present name="m['url']"}{$m.url}{/present}" data-key="{present name="m['key']"}{$m.key}{/present}">
+        <span class="n">{$m.name}</span>
+        <a class="del" href="javascript:;"></a>
+        <a class="sadd" href="javascript:;"></a>
+    </div>
+    <ul class="menusubs">
+        {notempty name="m['sub_button']"}
+        {volist name="m['sub_button']" id="s"}
+        <li data-type="{present name="s['type']"}{$s.type}{/present}" data-name="{present name="s['name']"}{$s.name}{/present}" data-url="{present name="s['url']"}{$s.url}{/present}" data-key="{present name="s['key']"}{$s.key}{/present}">
+            <span class="n">{$s.name}</span>
+            <a class="del" href="javascript:;"></a>
+        </li>
+        {/volist}
+        {/notempty}
+    </ul>
+</div>
+{/volist}
