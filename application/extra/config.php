@@ -25,7 +25,7 @@ return [
 
     //商城配置
     //商城根目录(记得使用完整的域名) 示例：http://baidu.com
-    'docroot' => 'http://shop.hakaei.iego.cn/',
+    'docroot' => 'http://shop.hakaei.iego.cn/weshop/',
 
     //商城名称
     'shopname' => '微信商城',
