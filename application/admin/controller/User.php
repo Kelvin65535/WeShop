@@ -8,6 +8,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Userlevel;
 use app\common\model\Util;
 use think\Controller;
 use think\Db;
@@ -112,6 +113,18 @@ class User extends Controller
     }
 
     /**
+     * 获取用户分组
+     */
+    public function getUserLevel() {
+        $userLevelModel = new Userlevel();
+        $list = $userLevelModel->getList();
+        return json([
+            'ret_code' => 0,
+            'ret_msg' => $list
+        ]);
+    }
+
+    /**
      * 获取用户信息
      */
     public function getUserInfo() {
@@ -173,5 +186,92 @@ class User extends Controller
             return json(['ret_code' => -1, 'ret_msg' => '']);
         }
         //}
+    }
+
+    /**
+     * 编辑用户分组
+     */
+    public function alterUserLevelInfo() {
+        $userlevel_model = new Userlevel();
+
+        if (input('?post.id')) {
+            $id = intval(input('post.id'));
+        } else {
+            $id = false;
+        }
+
+        if (input('?post.level_name')) {
+            $level_name = input('post.level_name');
+        } else {
+            $level_name = false;
+        }
+
+        if (input('?post.level_credit')) {
+            $level_credit = input('post.level_credit');
+        } else {
+            $level_credit = false;
+        }
+
+        if (input('?post.level_discount')) {
+            $level_discount = input('post.level_discount');
+        } else {
+            $level_discount = false;
+        }
+
+        if (input('?post.level_credit_feed')) {
+            $level_credit_feed = input('post.level_credit_feed');
+        } else {
+            $level_credit_feed = false;
+        }
+
+        if (input('?post.remark')) {
+            $remark = input('post.remark');
+        } else {
+            $remark = false;
+        }
+
+        if ($id >= 0) {
+            $ret = $userlevel_model->addLevel($id, $level_name, $level_credit, $level_discount, $level_credit_feed, $remark, 1);
+        } else {
+            $ret = $userlevel_model->addLevel(false, $level_name, $level_credit, $level_discount, $level_credit_feed, $remark, 1);
+        }
+
+        if ($ret) {
+            return json(['ret_code' => 0, 'ret_msg' => '']);
+        } else {
+            return json(['ret_code' => -1, 'ret_msg' => '']);
+        }
+    }
+
+    /**
+     * 获取用户分组详情
+     */
+    public function getUserLevelInfo() {
+        if (input('?get.id')) {
+            $id = input('get.id');
+        } else {
+            $id = false;
+        }
+        $userlevel_model = new Userlevel();
+        $info = $userlevel_model->getInfo($id);
+        return json(['ret_code' => 0, 'ret_msg' => $info]);
+    }
+
+    /**
+     * 删除用户分组
+     */
+    public function deleteLevel() {
+        $userlevel_model = new Userlevel();
+        if (input('?post.id')) {
+            $id = intval(input('post.id'));
+        } else {
+            return json(['ret_code' => -1, 'ret_msg' => '错误：id为空']);
+        }
+        try {
+            $userlevel_model->deleteLevel($id);
+            return json(['ret_code' => 0, 'ret_msg' => '']);
+        } catch (\Exception $ex) {
+            return json(['ret_code' => -1, 'ret_msg' => $ex->getMessage()]);
+        }
     }
 }

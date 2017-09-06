@@ -12,7 +12,7 @@ services.factory('User', ['$http', function ($http) {
          * @returns {undefined}
          */
         getUserLevel: function () {
-            return $http.get('?/wUser/getUserLevel/', {}).error(function (ret) {
+            return $http.get('/admin/User/getUserLevel/', {}).error(function (ret) {
                 _process_error(ret);
             });
         },
@@ -22,7 +22,7 @@ services.factory('User', ['$http', function ($http) {
          * @returns {unresolved}
          */
         getLevelInfo: function (id) {
-            return $http.get('?/wUser/getUserLevelInfo/', {
+            return $http.get('/admin/User/getUserLevelInfo/', {
                 params: {id: id}
             }).error(function (ret) {
                 _process_error(ret);
@@ -34,7 +34,7 @@ services.factory('User', ['$http', function ($http) {
          * @returns {unresolved}
          */
         deleteLevel: function (p) {
-            return $http.post('?/wUser/deleteLevel/', $.param(p), {
+            return $http.post('/admin/User/deleteLevel/', $.param(p), {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
             }).error(function (ret) {
                 _process_error(ret);
@@ -46,7 +46,7 @@ services.factory('User', ['$http', function ($http) {
          * @returns {unresolved}
          */
         alterUserLevelInfo: function (p) {
-            return $http.post('?/wUser/alterUserLevelInfo/', $.param(p), {
+            return $http.post('/admin/User/alterUserLevelInfo/', $.param(p), {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
             }).error(function (ret) {
                 _process_error(ret);

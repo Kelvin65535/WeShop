@@ -25,4 +25,52 @@ class Userlevel extends Model
          return Db::name('client_level')
             ->select();
     }
+
+    /**
+     * 获取等级信息
+     * @param type $levId
+     * @return mixed
+     */
+    public function getInfo($levId) {
+        return Db::name('client_level')
+            ->where('id', $levId)
+            ->find();
+    }
+
+    /**
+     * 添加一个会员级别
+     */
+    public function addLevel($id, $name, $credit, $discount, $feed, $remark = '', $upable = true) {
+        if ($id !== false && $id >= 0) {
+            return Db::name('client_level')
+                ->where("id", $id)
+                ->update([
+                    'level_name'  => $name,
+                    'level_credit' => $credit,
+                    'level_discount' => $discount,
+                    'level_credit_feed' => $feed,
+                    'remark' => $remark,
+                    'upable' => intval($upable)
+                ]);
+        } else {
+            return Db::name('client_level')
+                ->insertGetId([
+                    'level_name'  => $name,
+                    'level_credit' => $credit,
+                    'level_discount' => $discount,
+                    'level_credit_feed' => $feed,
+                    'remark' => $remark,
+                    'upable' => intval($upable)
+                ]);
+        }
+    }
+
+    /**
+     * 删除一个会员级别
+     */
+    public function deleteLevel($id) {
+        return Db::name('client_level')
+            ->where('id', $id)
+            ->delete();
+    }
 }

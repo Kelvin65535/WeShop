@@ -298,6 +298,16 @@ class mainpage extends Controller
         return $this->fetch('mainpage/users/iframe_list_customer');
     }
 
+    /**
+     * 会员等级列表
+     */
+    public function user_level() {
+        $userlevel_model = new Userlevel();
+        $this->assign('levels', $userlevel_model->getList());
+        return $this->fetch('mainpage/users/user_level');
+        $this->show(self::TPL . 'users/user_level.tpl');
+    }
+
     /********************
      *
      *  店铺设置
