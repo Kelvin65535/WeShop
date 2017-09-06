@@ -118,7 +118,7 @@
                     </div>
                     <div class="fv2Right">
                         <select class="form-control" id="pd-suppliers" name="product_supplier">
-                            <option value="0" {if $pd.suppiler eq 0}selected{/if}>无</option>
+                            <option value="0" {present name="pd.supplier"}{if $pd.suppiler eq 0}selected{/if}{/present}>无</option>
                             {foreach $suppliers as $supp}
                             <option value="{$supp.id}"
                                     {if $pd.product_supplier eq $supp.id}selected{/if}>{$supp.supp_name}</option>
