@@ -98,4 +98,57 @@ class Order extends Model
             return false;
         }
     }
+
+    /**
+     * 通过序列号获取订单信息
+     * @param int $orderId
+     * @return array
+     */
+    public function getOrderInfoBySerialNumber($serial_number) {
+        return Db::name('orders')
+            ->where('serial_number', $serial_number)
+            ->find();
+    }
+
+    /**
+     * 更新订单信息
+     * @param string|array $data 需要更新的数据
+     * @param string|array $where 查询条件，支持字符串／数组
+     * @return int 是否更新成功，成功返回更新的条数，失败返回0
+     */
+    public function updateOrder($data, $where) {
+        return Db::name('orders')
+            ->where($where)
+            ->update($data);
+    }
+
+    /**
+     * 用户订单付款通知 微信模板信息
+     * @global array $config
+     * @param int $orderId
+     * @param string $openid
+     */
+    public function userNewOrderNotify($orderId, $openid) {
+        $tpl = MessageTemplate::getTpl('pay_success');
+        if ($tpl && !empty($tpl['tpl_id'])) {
+            // 获取订单信息
+            $orderProducts = $this->Db->query("select pi.product_name as `name`,product_count as `count` from orders_detail od
+                left JOIN products_info pi on pi.product_id = od.product_id
+                where od.order_id = $orderId;");
+            $orderInfos    = array();
+            $orderInfo     = $this->getOrderInfo($orderId);
+            foreach ($orderProducts as $oi) {
+                $orderInfos[] = $oi['name'] . '(' . $oi['count'] . ')';
+            }
+            $shopName = $this->settings['shopname'];
+            return Messager::sendTemplateMessage($tpl['tpl_id'], $openid, array(
+                $tpl['first_key'] => '感谢您在' . $shopName . '购物',
+                $tpl['serial_key'] => $orderInfo['serial_number'],
+                $tpl['product_name_key'] => implode('、', $orderInfos),
+                $tpl['product_count_key'] => $orderInfo['product_count'] . '件',
+                $tpl['order_amount_key'] => '¥' . sprintf('%.2f', $orderInfo['order_amount']),
+                $tpl['remark_key'] => '点击详情 随时查看订单状态'
+            ), $this->getBaseURI() . "?/Order/expressDetail/order_id=$orderId");
+        }
+    }
 }

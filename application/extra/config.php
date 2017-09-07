@@ -44,7 +44,9 @@ return [
     // 是否已经通过微信认证
     'wechatVerifyed' => true,
 
-
+    //支付设置
+    //微信支付成功回调地址
+    'order_wxpay_notify' => 'http://shop.yejiayong.cn/wechat/Index/paymentnotify',
 
     //系统设置
     // 系统根目录

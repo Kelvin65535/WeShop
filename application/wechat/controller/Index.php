@@ -2,9 +2,11 @@
 
 namespace app\wechat\controller;
 
+use app\admin\model\Order;
 use think\Controller;
 use think\Request;
 use think\Log;
+use app\common\model\Util;
 
 use wxAesHelper;
 use test\test;
@@ -115,13 +117,92 @@ class Index extends Controller
     /**
      * 对微信发送对XML字符串进行解包
      * @param $postStr 微信服务端发送的XML字符串
-     * @return WechatPostObject XML内含的对象
+     * @return WechatPostObject|bool XML内含的对象
      */
     private function unpackXML($postStr) {
         if (empty($postStr)) {
             return false;
         }
         return simplexml_load_string($postStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+    }
+
+    /**
+     * 微信支付成功回调入口
+     */
+    public function paymentnotify() {
+        //解决$GLOBAL限制导致无法获取xml数据
+        $sourceStr = file_get_contents('php://input');
+        // 读取数据
+        $postObj = simplexml_load_string($sourceStr, 'SimpleXMLElement', LIBXML_NOCDATA);
+        // 数据参考 systemtest/payment_notify.xml
+        Log::info($sourceStr);
+        if (!$postObj) {
+            Log::error("支付回调处理失败，数据包解析失败");
+        } else {
+
+            // 对数据包进行签名验证
+            $postArr = (array)$postObj;
+            $sign    = Util::paySign($postArr);
+
+            if ($sign == $postObj->sign) {
+                // order serial number
+                $serial = $postObj->out_trade_no;
+                $this->order_callback($postObj);
+            }
+
+        }
+    }
+
+    /**
+     * 处理常规支付回调
+     * @param $postObj
+     */
+    public function order_callback($postObj) {
+        $serial = $postObj->out_trade_no;
+        // 微信交易单号
+        $transaction_id = $postObj->transaction_id;
+        if (!empty($transaction_id)) {
+            try {
+                $order_model = new Order();
+                // 获取订单信息
+                $orderInfo = $order_model->getOrderInfoBySerialNumber($serial);
+                $orderId   = intval($orderInfo['order_id']);
+                if ($orderInfo && $orderInfo['status'] != 'payed' && empty($orderInfo['wepay_serial'])) {
+                    // 更新订单信息
+                    // 修改为已支付
+                    if (
+                        $order_model->updateOrder([
+                            'wepay_serial' => $transaction_id,
+                            'wepay_openid' => $postObj->openid,
+                            'status' => 'payed',
+                            'wepayed' => 1
+                        ], [
+                            'serial_number' => $serial
+                        ])
+                    ) {
+                        // TODO 执行钩子程序
+//                        (new HookNewOrder($this))->deal([
+//                            'serial_number' => $serial,
+//                            'openid' => strval($postObj->openid),
+//                        ]);
+                        // 商户订单通知
+                        @$this->mOrder->comNewOrderNotify($orderId);
+                        // 用户订单通知 模板消息
+                        @$this->mOrder->userNewOrderNotify($orderId, $postObj->openid);
+                        // 积分结算
+                        @$this->mOrder->creditFinalEstimate($orderId);
+                        // 减库存
+                        @$this->mOrder->cutInstock($orderId);
+                        // 返回success
+                        echo "<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>";
+                    } else {
+                        Log::error("支付回调处理失败:" . $this->sourceStr);
+                    }
+                }
+            } catch (\Exception $ex) {
+                Log::error($ex->getMessage());
+            }
+        }
     }
 
 }

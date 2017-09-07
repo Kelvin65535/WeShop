@@ -3,6 +3,7 @@
 namespace app\weshop\controller;
 
 use app\common\model\Util;
+use app\wechat\model\Jssdk;
 use app\wechat\model\Wechatsdk;
 use app\weshop\model\Products;
 use think\Controller;
@@ -126,6 +127,26 @@ class UserCenter extends Controller
         return $this->fetch();
     }
 
+    /**
+     * 查看"订单列表"页面
+     */
+    public function orderlist($status = '') {
+//        if (input('?get.status')) {
+//            $status = '';
+//        } else {
+//            $status = input('get.status');
+//        }
+        $user = new User();
+        $JsSdk_model = new Jssdk();
+        //获取openid
+        $openid = $user->getOpenId();
+        $signPackage = $JsSdk_model->GetSignPackage();
+        $this->assign('signPackage', $signPackage);
+        $this->assign('status', $status);
+        $this->assign('title', '我的订单');
+        return $this->fetch();
+    }
+
 
     /**
      * Ajax获取订单列表
@@ -198,7 +219,7 @@ class UserCenter extends Controller
             // 解包从数据库获取的订单列表
             foreach ($orders as &$order){
                 //订单状态
-                $order['status'] = $this->orderStatus[$order['status']];
+                $order['statusX'] = $this->orderStatus[$order['status']];
                 //订单创建时间
                 $order['order_time'] = Util::dateTimeFormat($order['order_time']);
                 //订单详细数据
@@ -214,8 +235,11 @@ class UserCenter extends Controller
                     $data['spec2'] = $spec_info['spec_detail_name2'];
                 }
             }
+
+            $this->assign('orders', $orders);
         }
-        dump($orders);
+        return $this->fetch();
+        //dump($orders);
     }
 
 

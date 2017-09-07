@@ -55,7 +55,7 @@ require(['config'], function (config) {
                 orderLoading = true;
                 $('#list-loading').show();
                 // [HttpGet]
-                $.get('?/Uc/ajaxOrderlist/page=' + page + '&status=' + $('#status').val(), function (HTML) {
+                $.get('/weshop/Usercenter/ajaxOrderlist/page/' + page + '/status/' + $('#status').val(), function (HTML) {
                     orderLoading = false;
                     if (HTML === '' && page === 0) {
                         // 什么都没有
@@ -89,14 +89,16 @@ require(['config'], function (config) {
                     wxpayButton.html('支付发起中');
                     wxpayLoading = true;
                     // [HttpPost]
+
                     $.ajax({
-                        url: shoproot + '?/Order/ajaxGetBizPackage/',
+                        url: '/weshop/Order/ajaxGetBizPackage/',
                         dataType: 'json',
                         cache: false,
                         type: 'POST',
                         data: {
                             orderId: orderId
                         },
+                        /*
                         success: function (bizPackage) {
                             if (bizPackage.package !== 'prepay_id=') {
                                 // 支付操作成功
@@ -116,7 +118,14 @@ require(['config'], function (config) {
                             }
                         },
                         error: wepayError
+                        */
+                        success: function (bizPackage) {
+                            wxpayLoading = false;
+                            wepayCallback();
+                        }
                     });
+
+
                 }
             });
         }

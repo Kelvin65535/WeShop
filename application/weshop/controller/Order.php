@@ -81,6 +81,7 @@ class Order extends Controller
             if (sizeof($products) > 1) {
                 $productName = $products[0]['product_name'] . ' (多种商品)';
             } else {
+                Log::info($products);
                 $productName = $products[0]['product_name'];
             }
             // 流水号
@@ -103,9 +104,7 @@ class Order extends Controller
                 // 终端IP
                 'spbill_create_ip' => Util::getIps(),
                 // 通知地址
-                // TODO 将通知地址放到config配置文件中
-                //'notify_url' => $config->order_wxpay_notify,
-                'notify_url' => "http://yejiayong.cn/wechat/index/wxpay_notify",
+                'notify_url' => config("config.order_wxpay_notify"),
                 // 交易类型
                 'trade_type' => 'JSAPI',
                 // 用户openid
