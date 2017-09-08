@@ -14,7 +14,8 @@ return array(
     // 下单成功
     'pay_success' => array(
         // 模板ID
-        'tpl_id' => 'na5UrfqHLehpWT_PX9gDE3-1FVMxMFBmahjzAsR0qpE',
+        //'tpl_id' => 'na5UrfqHLehpWT_PX9gDE3-1FVMxMFBmahjzAsR0qpE',
+        'tpl_id' => 'WR--xzZLs8r4buh8kLgsv5vQmuJVVYwgE0mRYAlnUR4', //TODO 测试公众号ID
         // 模板顶部文字key，默认first
         'first_key' => 'first',
         // 订单序列号key

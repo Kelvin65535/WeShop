@@ -8,6 +8,8 @@
 
 namespace app\admin\model;
 
+use app\wechat\model\Messager;
+use app\wechat\model\Messagetemplate;
 use think\Db;
 use think\Model;
 
@@ -123,24 +125,73 @@ class Order extends Model
     }
 
     /**
-     * 用户订单付款通知 微信模板信息
-     * @global array $config
+     * 获取订单信息
      * @param int $orderId
-     * @param string $openid
+     * @return array
+     */
+    public function getOrderInfo($orderId) {
+        return Db::name('orders')
+            ->where('order_id', $orderId)
+            ->find();
+    }
+
+    /**
+     * 获取订单列表，单表
+     */
+    public function GetOrderDetails($id) {
+        if ($id > 0) {
+            return Db::name('orders_detail')
+                ->where('order_id', $id)
+                ->select();
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 减除库存
+     * @param int $orderId 需要减除库存的订单id
+     * @return bool 成功为true
+     */
+    public function cutInstock($orderId, $command = '-') {
+        $orderDetail = $this->GetOrderDetails($orderId);
+        foreach ($orderDetail as $dt) {
+            if ($dt['product_spec_id'] > 0) {
+                // 更新规格库存表
+                Db::name('product_spec')
+                    ->where('id', $dt['product_spec_id'])
+                    ->where('product_id', $dt['product_id'])
+                    ->update(['instock' => "instock $command {$dt["product_count"]}"]);
+            } else {
+                // 更新原始库存表
+                Db::name('products_info')
+                    ->where('product_id', $dt['product_id'])
+                    ->update(['instock' => "instock $command {$dt["product_count"]}"]);
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 用户订单付款通知 微信模板信息
+     * @param int $orderId 需要发送的订单id
+     * @param string $openid 需要发送的用户openid
      */
     public function userNewOrderNotify($orderId, $openid) {
         $tpl = MessageTemplate::getTpl('pay_success');
         if ($tpl && !empty($tpl['tpl_id'])) {
             // 获取订单信息
-            $orderProducts = $this->Db->query("select pi.product_name as `name`,product_count as `count` from orders_detail od
-                left JOIN products_info pi on pi.product_id = od.product_id
-                where od.order_id = $orderId;");
+            $orderProducts = Db::name('orders_detail')->alias('detail')
+                ->join('weshop_products_info info', 'info.product_id = detail.product_id', 'LEFT')
+                ->where('detail.order_id', $orderId)
+                ->field('info.product_name as name, product_count as count')
+                ->select();
             $orderInfos    = array();
             $orderInfo     = $this->getOrderInfo($orderId);
             foreach ($orderProducts as $oi) {
                 $orderInfos[] = $oi['name'] . '(' . $oi['count'] . ')';
             }
-            $shopName = $this->settings['shopname'];
+            $shopName = config('config.shopname');
             return Messager::sendTemplateMessage($tpl['tpl_id'], $openid, array(
                 $tpl['first_key'] => '感谢您在' . $shopName . '购物',
                 $tpl['serial_key'] => $orderInfo['serial_number'],
@@ -148,7 +199,7 @@ class Order extends Model
                 $tpl['product_count_key'] => $orderInfo['product_count'] . '件',
                 $tpl['order_amount_key'] => '¥' . sprintf('%.2f', $orderInfo['order_amount']),
                 $tpl['remark_key'] => '点击详情 随时查看订单状态'
-            ), $this->getBaseURI() . "?/Order/expressDetail/order_id=$orderId");
+            ), config('config.docroot') . "weshop/Order/expressDetail/order_id=$orderId");
         }
     }
 }

@@ -20,14 +20,14 @@ class Messager extends Model
 {
     /**
      * 发送微信模板消息
-     * @param int $template_id
-     * @param string $openid
-     * @param array $data
-     * @param string $url
+     * @param int $template_id 模版ID
+     * @param string $openid 用户openid
+     * @param array $data 发送数据
+     * @param string $url 消息点击访问地址
      * @return array
      */
     public static function sendTemplateMessage($template_id, $openid, $data, $url = '') {
-        $stoken = WechatSdk::getServiceAccessToken();
+        $stoken = Wechatsdk::getServiceAccessToken();
         foreach ($data as &$d) {
             $d = array(
                 'value' => $d,

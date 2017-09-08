@@ -3,6 +3,7 @@
 namespace app\wechat\controller;
 
 use app\admin\model\Order;
+use app\wechat\model\Messagetemplate;
 use think\Controller;
 use think\Request;
 use think\Log;
@@ -185,14 +186,14 @@ class Index extends Controller
 //                            'serial_number' => $serial,
 //                            'openid' => strval($postObj->openid),
 //                        ]);
-                        // 商户订单通知
-                        @$this->mOrder->comNewOrderNotify($orderId);
+                        // TODO 商户订单通知
+                        //@$this->mOrder->comNewOrderNotify($orderId);
                         // 用户订单通知 模板消息
-                        @$this->mOrder->userNewOrderNotify($orderId, $postObj->openid);
+                        @$order_model->userNewOrderNotify($orderId, $postObj->openid);
                         // 积分结算
                         @$this->mOrder->creditFinalEstimate($orderId);
                         // 减库存
-                        @$this->mOrder->cutInstock($orderId);
+                        @$order_model->cutInstock($orderId);
                         // 返回success
                         echo "<xml><return_code><![CDATA[SUCCESS]]></return_code></xml>";
                     } else {
@@ -203,6 +204,11 @@ class Index extends Controller
                 Log::error($ex->getMessage());
             }
         }
+    }
+
+    function test() {
+        $order_model = new Order();
+        $order_model->cutInstock(11);
     }
 
 }
