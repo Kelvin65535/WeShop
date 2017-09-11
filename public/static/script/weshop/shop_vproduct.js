@@ -19,8 +19,8 @@ require(['config'], function (config) {
 
         // 预加载小图标
         var i = new Image();
-        i.src = 'public/static/images/icon/iconfont-iconfontroundcheck-50x.png';
-        i.src = 'public/static/images/icon/iconfont-iconfontroundcheck-100x.png';
+        i.src = '/public/static/images/icon/iconfont-iconfontroundcheck-50x.png';
+        i.src = '/public/static/images/icon/iconfont-iconfontroundcheck-100x.png';
 
         /**
          * 商品介绍是否已经加载标记
@@ -209,44 +209,21 @@ require(['config'], function (config) {
                 Spinner.spin($('#vpd-content').get(0));
                 contentLoaded = true;
                 // ajax 加载商品详情
-                $.ajax({
-                    url: 'html/products/' + $('#iproductId').val() + '.html',
-                    success: function (data) {
-                        Spinner.stop();
-                        $('#vpd-content').html(data);
-                        $('#vpd-detail-header').show();
-                        $('.notload').removeClass('notload');
-                        $('#vpd-content').fadeIn();
-                        // 调整图片
-                        $('#vpd-content img').each(function () {
-                            $(this).on('load', function () {
-                                if ($(this).width() >= document.body.clientWidth) {
-                                    $(this).css('display', 'block');
-                                }
-                                $(this).height('auto');
-                            });
+                $('#vpd-content').load('/weshop/Product/ajaxGetContent/id/' + $('#iproductId').val(), function () {
+                    Spinner.stop();
+                    $('#vpd-detail-header').show();
+                    $('.notload').removeClass('notload');
+                    $('#vpd-content').fadeIn();
+                    // 调整图片
+                    $('#vpd-content img').each(function () {
+                        $(this).on('load', function () {
+                            if ($(this).width() >= document.body.clientWidth) {
+                                $(this).css('display', 'block');
+                            }
+                            $(this).height('auto');
                         });
-                        $('#vpd-content').find('div').width('auto');
-                    },
-                    error: function () {
-                        // 如果html文件没有生成，直接读取数据库内容
-                        $('#vpd-content').load('?/vProduct/ajaxGetContent/id=' + $('#iproductId').val(), function () {
-                            Spinner.stop();
-                            $('#vpd-detail-header').show();
-                            $('.notload').removeClass('notload');
-                            $('#vpd-content').fadeIn();
-                            // 调整图片
-                            $('#vpd-content img').each(function () {
-                                $(this).on('load', function () {
-                                    if ($(this).width() >= document.body.clientWidth) {
-                                        $(this).css('display', 'block');
-                                    }
-                                    $(this).height('auto');
-                                });
-                            });
-                            $('#vpd-content').find('div').width('auto');
-                        });
-                    }
+                    });
+                    $('#vpd-content').find('div').width('auto');
                 });
 
             }

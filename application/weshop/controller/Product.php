@@ -292,6 +292,20 @@ class Product extends Controller
     }
 
     /**
+     * ajax获取商品描述
+     * @param type $id 商品id
+     */
+    public function ajaxGetContent($id) {
+        if ($id > 0) {
+            $desc = Db::name('products_info')
+                ->where('product_id', $id)
+                ->value('products_desc');
+            echo $desc;
+            return;
+        }
+    }
+
+    /**
      * 初始化函数
      * 新建本控制器实例时调用该方法
      * 加载全局模版变量
