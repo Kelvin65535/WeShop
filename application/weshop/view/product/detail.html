@@ -6,9 +6,11 @@
     <link href="favicon.ico" rel="Shortcut Icon"/>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
     <meta name="format-detection" content="telephone=no"/>
-    <link href="{$docroot}public/static/css/wshop/wshop_vproduct.css" type="text/css" rel="Stylesheet"/>
+    <link href="{$docroot}public/static/css/wshop_vproduct.css" type="text/css" rel="Stylesheet"/>
 </head>
 <body>
+
+{include file="/global/top_nav" /}
 
 <input type="hidden" value="{$comid|default=0}" id="comid"/>
 <input type="hidden" value="{$productInfo.product_name}" id="sharetitle"/>
@@ -209,7 +211,7 @@
     {else /}
         <a class="button disable">已下架</a>
     {/eq}
-    <a id="toCart" href="?/Order/Cart/"><i>0</i></a>
+    <a id="toCart" href="/weshop/Order/cart/"><i>0</i></a>
 </div>
 
 <script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>

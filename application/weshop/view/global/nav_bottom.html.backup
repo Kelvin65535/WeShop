@@ -1,0 +1,83 @@
+<!--页面尾部-->
+<footer>
+    <!--尾部通用代码-->
+    <!--首页-->
+    <div class="nav_wrap" id="nav_index">
+        <div class="nav_flex">
+            <div class="nav_box">
+                <div id="nav_index_img" class="nav_img">
+                    <img src="{$docroot}public/static/images/weshop/index{if $controller eq 'Index'}_in{/if}.svg" width="100%" height="100%">
+                </div>
+
+                <div id="nav_index_text" class="nav_text">
+                    首页
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--分类-->
+    <div class="nav_wrap" id="nav_select">
+        <div class="nav_flex">
+            <div class="nav_box">
+                <div id="nav_select_img" class="nav_img">
+                    <img src="{$docroot}public/static/images/weshop/select{if $controller eq 'Product'}_in{/if}.svg" width="100%" height="100%">
+                </div>
+
+                <div id="nav_select_text" class="nav_text">
+                    分类
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--购物车-->
+    <div class="nav_wrap" id="nav_cart">
+        <div class="nav_flex">
+            <div class="nav_box">
+                <div id="nav_cart_img" class="nav_img">
+                    <img src="{$docroot}public/static/images/weshop/cart{if $controller eq 'Order'}_in{/if}.svg" width="100%" height="100%">
+                </div>
+
+                <div id="nav_cart_text" class="nav_text">
+                    购物车
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--我的-->
+    <div class="nav_wrap" id="nav_my">
+        <div class="nav_flex">
+            <div class="nav_box">
+                <div id="nav_my_img" class="nav_img">
+                    <img src="{$docroot}public/static/images/weshop/my{if $controller eq 'Usercenter'}_in{/if}.svg" width="100%" height="100%">
+                </div>
+
+                <div id="nav_my_text" class="nav_text">
+                    我的
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script type="text/javascript">
+    $(function () {
+        var file = ['index','select','cart','my'],
+            path = ['../index/index.html','../product/category.html','../order/cart.html','../usercenter/home.html'];
+
+        $("#nav_"+file[0]+"").bind('touchend',function () {
+            self.location=path[0]
+        });
+        $("#nav_"+file[1]+"").bind('touchend',function () {
+            self.location=path[1]
+        });
+        $("#nav_"+file[2]+"").bind('touchend',function () {
+            self.location=path[2]
+        });
+        $("#nav_"+file[3]+"").bind('touchend',function () {
+            self.location=path[3]
+        });
+    })
+</script>

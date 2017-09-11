@@ -9,12 +9,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
-    <link href="{$docroot}public/static/css/wshop/wshop_view_category.css" type="text/css" rel="Stylesheet" />
-
-    <link href="{$docroot}public/static/css/weshop_public_bottom.css" rel="stylesheet" type="text/css">
+    <link href="{$docroot}public/static/css/wshop_view_category.css" type="text/css" rel="Stylesheet" />
 </head>
 
 <body style="overflow:hidden;padding:0;-webkit-overflow-scrolling: none;">
+
+{include file="/global/top_nav" /}
 
 <input type="hidden" value="{$searchkey}" id="searchkey" />
 <input type="hidden" value="{$cat}" id="cat" />
@@ -35,13 +35,12 @@
     </div>
     <div id="viewCatRight"></div>
 </div>
+
 <script data-main="{$docroot}public/static/script/weshop/shop_vcategory.js" src="http://apps.bdimg.com/libs/require.js/2.1.9/require.min.js"></script>
 
 
 <script language='javascript' src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'> </script>
 {include file="global/nav_bottom" /}
-
-
 
 </body>
 </html>

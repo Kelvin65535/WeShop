@@ -25,7 +25,6 @@ class Order extends Controller
     public function cart() {
         $cart = new Cart();
         $user = new User();
-        //dump($cart->get());
 
         //申请用于JSSDK的SignPackage
         $jssdk = new Jssdk();
