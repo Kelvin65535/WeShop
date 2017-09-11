@@ -339,6 +339,20 @@ class User extends Model
         return $sex_arr[($sexInt ? $sexInt : 0)];
     }
 
+    /**
+     * 判断微信用户是否已经关注
+     * @return type
+     */
+    public function isSubscribed() {
+        if ($this->inWechat()) {
+            $openid = $this->getOpenId();
+            $wechat_model = new Wechatsdk();
+            $WechatUserInfo = $wechat_model->getUserInfo($wechat_model->getServiceAccessToken(), $openid, true);
+            return $WechatUserInfo->subscribe == 1;
+        }
+        return false;
+    }
+
 }
 
 

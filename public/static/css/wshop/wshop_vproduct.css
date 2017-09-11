@@ -140,7 +140,7 @@ input {
   position: absolute;
   top: -10px;
   right: -10px;
-  background: url(../images/icon/iconfont-you.png) center no-repeat;
+  background: url(/public/static/images/icon/iconfont-you.png) center no-repeat;
   background-size: 20px;
   opacity: 0.8;
 }
@@ -182,8 +182,8 @@ header.bheader:after {
 ._Tiping {
   opacity: 0.8;
   position: fixed;
-  background: url('../images/icon/iconfont-iconfontroundcheck-50x.png') center 20px no-repeat #333333;
-  background-image: -webkit-image-set(url(../images/icon/iconfont-iconfontroundcheck-50x.png) 1x, url(../images/icon/iconfont-iconfontroundcheck-100x.png) 2x);
+  background: url('/public/static/images/icon/iconfont-iconfontroundcheck-50x.png') center 20px no-repeat #333333;
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-iconfontroundcheck-50x.png) 1x, url(/public/static/images/icon/iconfont-iconfontroundcheck-100x.png) 2x);
   background-size: 50px;
   color: #fff;
   line-height: 70px;
@@ -262,44 +262,44 @@ header.bheader:after {
   margin: 0 auto 2px auto;
 }
 .bottom_nav .nav_search i {
-  background-image: url(../images/navs/iconfont-sort.png);
+  background-image: url(/public/static/images/navs/iconfont-sort.png);
   background-position: center;
   background-size: 22px;
 }
 .bottom_nav .nav_search.hover i {
-  background-image: url(../images/navs/iconfont-sort-h.png);
+  background-image: url(/public/static/images/navs/iconfont-sort-h.png);
 }
 .bottom_nav .nav_shopcart i {
-  background-image: url(../images/navs/iconfont-ggg.png);
+  background-image: url(/public/static/images/navs/iconfont-ggg.png);
   background-position: center;
   background-size: 23px;
 }
 .bottom_nav .nav_shopcart.hover i {
-  background-image: url(../images/navs/iconfont-ggg-h.png);
+  background-image: url(/public/static/images/navs/iconfont-ggg-h.png);
 }
 .bottom_nav .nav_me i {
-  background-image: url(../images/navs/iconfont-me.png);
+  background-image: url(/public/static/images/navs/iconfont-me.png);
   background-position: center;
   background-size: 22px;
 }
 .bottom_nav .nav_me.hover i {
-  background-image: url(../images/navs/iconfont-me-h.png);
+  background-image: url(/public/static/images/navs/iconfont-me-h.png);
 }
 .bottom_nav .nav_gift i {
-  background-image: url(../images/navs/iconfont-gift.png);
+  background-image: url(/public/static/images/navs/iconfont-gift.png);
   background-position: center;
   background-size: 22px;
 }
 .bottom_nav .nav_gift.hover i {
-  background-image: url(../images/navs/iconfont-gift-h.png);
+  background-image: url(/public/static/images/navs/iconfont-gift-h.png);
 }
 .bottom_nav .nav_index i {
-  background-image: url(../images/navs/iconfont-home.png);
+  background-image: url(/public/static/images/navs/iconfont-home.png);
   background-position: center;
   background-size: 25px;
 }
 .bottom_nav .nav_index.hover i {
-  background-image: url(../images/navs/iconfont-home-h.png);
+  background-image: url(/public/static/images/navs/iconfont-home-h.png);
 }
 .bottom_nav > a.hover {
   border-bottom-color: ff8a00;
@@ -421,13 +421,13 @@ header.bheader:after {
   text-align: center;
   position: relative;
   float: left;
-  background: url('../images/icon/iconfont-add1-16x.png') center no-repeat #f7f7f7;
-  background-image: -webkit-image-set(url(../images/icon/iconfont-add1-16x.png) 1x, url(../images/icon/iconfont-add1-32x.png) 2x);
+  background: url('/public/static/images/icon/iconfont-add1-16x.png') center no-repeat #f7f7f7;
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-add1-16x.png) 1x, url(/public/static/images/icon/iconfont-add1-32x.png) 2x);
   background-size: 16px;
 }
 .productCountMinus {
-  background-image: url('../images/icon/iconfont-minus-20x.png') !important;
-  background-image: -webkit-image-set(url(../images/icon/iconfont-minus-20x.png) 1x, url(../images/icon/iconfont-minus-40x.png) 2x) !important;
+  background-image: url('/public/static/images/icon/iconfont-minus-20x.png') !important;
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-minus-20x.png) 1x, url(/public/static/images/icon/iconfont-minus-40x.png) 2x) !important;
   background-size: 20px !important;
   border-right: 1px solid #eee;
 }
@@ -498,8 +498,8 @@ header.bheader:after {
   display: block;
   height: 45px;
   width: 45px;
-  background: url(../images/icon/iconfont-angleleft-25x.png) center no-repeat;
-  background-image: -webkit-image-set(url(../images/icon/iconfont-angleleft-25x.png) 1x, url(../images/icon/iconfont-angleleft-50x.png) 2x);
+  background: url(/public/static/images/icon/iconfont-angleleft-25x.png) center no-repeat;
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-angleleft-25x.png) 1x, url(/public/static/images/icon/iconfont-angleleft-50x.png) 2x);
   background-size: 25px;
 }
 .listTopArrow.home {
@@ -511,8 +511,8 @@ header.bheader:after {
   display: block;
   height: 45px;
   width: 45px;
-  background: url(../images/icon/iconfont-icontitlehuishouye-30x.png) center no-repeat;
-  background-image: -webkit-image-set(url(../images/icon/iconfont-icontitlehuishouye-30x.png) 1x, url(../images/icon/iconfont-icontitlehuishouye-60x.png) 2x);
+  background: url(/public/static/images/icon/iconfont-icontitlehuishouye-30x.png) center no-repeat;
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-icontitlehuishouye-30x.png) 1x, url(/public/static/images/icon/iconfont-icontitlehuishouye-60x.png) 2x);
   background-size: 30px;
 }
 .listTopArrow.search {
@@ -707,8 +707,8 @@ body {
   border-radius: 5px;
   bottom: 16px;
   right: 10px;
-  background: url('../images/icon/iconfont-heart-b-16.png') 5px center no-repeat;
-  background-image: -webkit-image-set(url(../images/icon/iconfont-heart-b-16.png) 1x, url(../images/icon/iconfont-heart-b-32.png) 2x);
+  background: url('/public/static/images/icon/iconfont-heart-b-16.png') 5px center no-repeat;
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-heart-b-16.png) 1x, url(/public/static/images/icon/iconfont-heart-b-32.png) 2x);
   background-size: 16px;
   border: 1px solid #e4393c;
   padding: 4px 12px;
@@ -721,8 +721,8 @@ body {
   text-indent: 3px;
 }
 .uc-add-like.fill {
-  background-image: url('../images/icon/iconfont-heart-w-16.png');
-  background-image: -webkit-image-set(url(../images/icon/iconfont-heart-w-16.png) 1x, url(../images/icon/iconfont-heart-w-32.png) 2x);
+  background-image: url('/public/static/images/icon/iconfont-heart-w-16.png');
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-heart-w-16.png) 1x, url(/public/static/images/icon/iconfont-heart-w-32.png) 2x);
   background-color: #e4393c;
   color: #fff;
 }
@@ -786,8 +786,8 @@ body {
   display: block;
   height: 45px;
   width: 45px;
-  background: url(../images/icon/iconfont-cart-28x.png) center no-repeat;
-  background-image: -webkit-image-set(url(../images/icon/iconfont-cart-28x.png) 1x, url(../images/icon/iconfont-cart-56x.png) 2x);
+  background: url(/public/static/images/icon/iconfont-cart-28x.png) center no-repeat;
+  background-image: -webkit-image-set(url(/public/static/images/icon/iconfont-cart-28x.png) 1x, url(/public/static/images/icon/iconfont-cart-56x.png) 2x);
   background-size: 28px;
   text-align: right;
   padding-top: 1px;

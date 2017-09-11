@@ -274,4 +274,79 @@ class Products extends Model
             ->select();
         return $pds;
     }
+
+    /**
+     * 随机获取商品列表
+     * @param type $limit
+     * @return type
+     */
+    public function randomGetProducts($cat, $notId, $limit = 10) {
+        $catParent = Db::name('product_category')
+            ->where('cat_id', $cat)
+            ->value('cat_parent');
+        $slev = Db::name('product_category')
+            ->where('cat_parent', $catParent)
+            ->where('cat_id', '<>', $cat)
+            ->field('cat_id')
+            ->select();
+        /*
+        $catParent = $this->Dao->select('cat_parent')
+                               ->from(TABLE_PRODUCT_CATEGORY)
+                               ->where("cat_id=$cat")
+                               ->getOne();
+        $slev      = $this->Dao->select('cat_id')
+                               ->from(TABLE_PRODUCT_CATEGORY)
+                               ->where("cat_parent=$catParent")
+                               ->aw("cat_id <> $cat")
+                               ->exec();
+        */
+        $sIn       = array();
+        foreach ($slev as $s) {
+            $sIn[] = $s['cat_id'];
+        }
+        $sIn   = implode(',', $sIn);
+        $plist = Db::name('products_info')->alias('info')
+        ->join('weshop_product_onsale onsale', 'onsale.product_id = info.product_id')
+        ->where('info.is_delete', '<>', 1)
+        ->where('info.product_online', '<>', 0)
+        ->where('info.product_cat', 'IN', $sIn)
+        ->where('info.product_id', '<>', $notId)
+        ->order('RAND()')
+        ->limit($limit)
+        ->field('info.*, onsale.sale_prices, onsale.discount')
+        ->select();
+        /*
+        $plist = $this->Db->query("
+            SELECT po.*,
+            ps.sale_prices,
+            ps.discount " . 
+            "FROM `products_info` po " . 
+            "LEFT JOIN `product_onsale` ps ON po.product_id = ps.product_id " . 
+            "WHERE po.is_delete <> 1 
+            AND po.product_online <> 0 
+            AND po.product_id <> $notId 
+            AND po.product_cat IN ($sIn) 
+            ORDER BY RAND() 
+            LIMIT $limit;");
+        */
+        foreach ($plist as &$p) {
+            $p['images'] = $this->getProductImages($p['product_id']);
+        }
+        return $plist;
+    }
+
+    /**
+     * 增加商品阅读数
+     * @param type $pid 商品id
+     * @return boolean
+     */
+    public function upReadi($pid) {
+        if (!is_numeric($pid)) {
+            return false;
+        }
+        // readi
+        return Db::name('products_info')
+            ->where('product_id', $pid)
+            ->update(['product_readi' => ['exp', 'product_readi + 1']]);
+    }
 }

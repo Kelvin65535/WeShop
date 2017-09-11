@@ -5,6 +5,7 @@ namespace app\weshop\controller;
 use app\weshop\model\Products;
 use app\weshop\model\Productspec;
 use app\weshop\model\User;
+use app\wechat\model\Jssdk;
 use think\Controller;
 use think\Request;
 use think\Db;
@@ -129,16 +130,72 @@ class Product extends Controller
         $user_model = new User();
         $product_model = new Products();
         $product_spec_model = new Productspec();
+        $jssdk_model = new Jssdk();
 
         //获取open_id
         $openid = $user_model->getOpenId();
+        //判断用户是否已关注
+        $isSubscribed = $user_model->isSubscribed();
 
         //获取产品基本信息
         $product_info = $product_model->getProductInfoById($id);
 
-        $this->assign('product', $product_info);
-        $this->assign('openid', $openid);
+        // 获取价格表
+        $specs = $product_spec_model->getProductSpecs($id);
+
+        // 获取价格表（详细）
+        $specsDistinct = $product_spec_model->getProductSpecsDistinct($id);
+
+        // 获取会员折扣
+        $discount = $user_model->getDiscount($user_model->getUid());
+
+        // 随机product推荐
+        $sList = $product_model->randomGetProducts($product_info['product_cat'], $id, 6);
+
+        // TODO 促销判断
+        // if (strtotime($productInfo['product_prom_limitdate']) < $this->now) {
+        //     $productInfo['product_prom'] = 0;
+        // }
+        // 
+        // TODO 红包信息
+        // $promInfo = $this->Envs->getPdEnvs($Query->id, 1);
+        // 
+        // TODO 商品是否已收藏
+        // $isLiked = false;
+
+        if ($user_model->inWechat()) {
+            $signPackage = $jssdk_model->GetSignPackage();
+            $this->assign('signPackage', $signPackage);
+        }
+
+        $this->assign('openid', $openid); //微信openid
+        $this->assign('isSubscribed', $isSubscribed); //微信用户是否已关注
+
+        $this->assign('productid', $id); //产品id
+        $this->assign('title', $product_info['product_name']); //标题（产品名称）
+        $this->assign('productInfo', $product_info); //产品信息
+        $this->assign('specs', $specs); //产品分类
+        $this->assign('specsDistinct', $specsDistinct); //详细产品分类
+        $this->assign('images', $product_info['images']); //产品图片
+        $this->assign('images_count', count($product_info['images'])); //产品图片数
+        $this->assign('slist', $sList); //随机推荐产品
+        $this->assign('discount', $discount); //会员折扣
+        $this->assign('prominfo', false);
+        $this->assign('isLiked', false); //商品是否已收藏
+
+        // 增加点击数
+        $product_model->upReadi($id);
+
         return $this->fetch();
+        // echo "openid"; dump($openid);
+        // echo "isSubscribed"; dump($isSubscribed);
+        // echo "productid"; dump($id);
+        // echo "title"; dump($product_info['product_name']);
+        // echo "productInfo"; dump($product_info);
+        // echo "specs"; dump($specs);
+        // echo "specsDistinct"; dump($specsDistinct);
+        // echo "images"; dump($product_info['images']);
+        // echo "images_count"; dump(count($product_info['images']));
     }
 
 

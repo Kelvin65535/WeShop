@@ -1,439 +1,264 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 <head>
-    {include file="global/meta" /}
-    <title>商品详情</title>
-    <link href="{$docroot}public/static/css/weshop_detail.css" rel="stylesheet" type="text/css">
-    <link href="{$docroot}public/static/css/swiper-3.4.1.min.css" rel="stylesheet" type="text/css">
-    <style>
-        .loading{
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-        }
-    </style>
+    <meta http-equiv=Content-Type content="text/html;charset=utf-8"/>
+    <title>{$title} - {$settings.shopname}</title>
+    <link href="favicon.ico" rel="Shortcut Icon"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <link href="{$docroot}public/static/css/wshop/wshop_vproduct.css" type="text/css" rel="Stylesheet"/>
 </head>
 <body>
 
-    <!--loading效果-->
-    <div class="loading">
-        页面加载中....
+<input type="hidden" value="{$comid|default=0}" id="comid"/>
+<input type="hidden" value="{$productInfo.product_name}" id="sharetitle"/>
+<input type="hidden" value="{$productid|default=0}" id="iproductId"/>
+<input type="hidden" value="{$productInfo.market_price|sprintf="%.2f",###}" id="mprice"/>
+
+<!-- touchslider -->
+<div class="touchslider" id="touchslider">
+    <div class="touchslider-viewport">
+        {volist name="images" id="item"}
+            <div class="touchslider-item">
+                <img style="max-width: 100%;"
+                     data-big="{$item.image_path}"
+                     src="{$item.image_path}"/>
+            </div>
+        {/volist}
     </div>
-    <!--选择尺寸套餐展示区域-->
-    <div class="select_tab_wrap">
-        <div class="select_tab">
-        </div>
+    <div class="touchslider-nav">
+        {volist name="images" id="item"}
+            <span class="touchslider-nav-item"></span>
+        {/volist}
+    </div>
+</div>
+<script type="text/javascript">document.querySelector('#touchslider').style.height = document.documentElement.clientWidth + 'px';</script>
+<!-- touchslider -->
 
-        <div class="select_main">
-            <div class="select_cancel">
-                <img src="{$docroot}public/static/images/weshop/cha.svg" width="100%" height="100%">
+<div id="container">
+    {eq name="productInfo['product_online']" value="1"}
+        <div class="uc-add-like{if $isLiked} fill{/if}">收藏</div>
+        <p class="vpd-title" style='height:auto;'>
+            {$productInfo.product_name}
+        </p>
+        <p class="vpd-subtitle">{$productInfo.product_subtitle}</p>
+    {/eq}
+
+    {eq name="productInfo['product_online']" value="1"}
+        
+        <!-- 价格显示 -->
+        {eq name="productInfo.product_prom" value="1"}
+            <dl class="pd-dsc clearfix">
+                <dt>市场价：</dt>
+                <dt id="pd-market-price"
+                    class="prices marketPrice">&yen;{$productInfo.market_price|sprintf="%.2f",###}</dt>
+            </dl>
+            <dl class="pd-dsc clearfix">
+                <dt>零售价：</dt>
+                <dt class="prices marketPrice"
+                    id="pd-market-price2">&yen;{($productInfo.sell_price)|sprintf="%.2f",###}</dt>
+            </dl>
+            <dl class="pd-dsc clearfix">
+                <dt>秒杀价：</dt>
+                <dt class="prices" id="pd-sale-price">
+                    &yen;{php}echo (sprintf("%.2f", $product['sale_prices'] * ($product['product_prom_discount'] / 100)));{/php}
+                </dt>
+            </dl>
+            <dl class="pd-dsc clearfix">
+                <dt>截止时间：</dt>
+                <dt>{$productInfo.product_prom_limitdate}</dt>
+            </dl>
+
+        {else /}
+
+            {neq name="productInfo.sale_prices" value="0.00"}
+
+                {gt name="productInfo.market_price" value="0"}
+                    <dl class="pd-dsc clearfix">
+                        <dt>市场价：</dt>
+                        <dt id="pd-market-price"
+                            class="prices marketPrice">&yen;{$productInfo.market_price|sprintf="%.2f",###}</dt>
+                    </dl>
+                {/gt}
+    
+                {eq name="discount" value="1"}
+                    <dl class="pd-dsc clearfix">
+                        <dt>零售价：</dt>
+                        <dt class="prices" id="pd-sale-price">
+                            &yen;{$productInfo['sell_price']*$discount|sprintf="%.2f",###}
+                        </dt>
+                    </dl>
+                {else /}
+                    <dl class="pd-dsc clearfix">
+                        <dt>零售价：</dt>
+                        <dt class="prices marketPrice"
+                            id="pd-market-price2">&yen;{$productInfo.sale_prices|sprintf="%.2f",###}</dt>
+                    </dl>
+                    <dl class="pd-dsc clearfix">
+                        <dt>专享价：</dt>
+                        <dt class="prices"
+                            id="pd-sale-price">&yen;{$productInfo['sell_price']*$discount|sprintf="%.2f",###}</dt>
+                    </dl>
+                {/eq}
+
+            {/neq}
+
+            {if condition="$prominfo"}
+                <dl class="pd-dsc clearfix">
+                    <dt>促销：</dt>
+                    <dt class="prominfo">
+                        <b>红包</b>满{$prominfo.req_amount}减{$prominfo.dis_amount}
+                    </dt>
+                </dl>
+            {/if}
+
+        {/eq}
+
+        <!-- 价格显示 -->
+        {neq name="specsDistinct['a']['spd1name']" value=""}
+            <div>
+                {eq name="productInfo['product_prom']" value="1"}
+                    {volist name="specs" id="sp"}
+                        <input type='hidden' class='spec-hashs' data-stock="{$sp.instock}"
+                               value='{$sp.spec_det_id1}-{$sp.spec_det_id2}'
+                               data-price="{php}echo (sprintf("%.2f", $sp['sale_price'] * ($productInfo['product_prom_discount'] / 100)));{/php}"
+                               data-market-price="{$sp.market_price}" data-id="{$sp.id}"/>
+                    {/volist}
+                {else /}
+                    {volist name="specs" id="sp"}
+                        <input type='hidden' class='spec-hashs' data-stock="{$sp.instock}"
+                               value='{$sp.spec_det_id1}-{$sp.spec_det_id2}'
+                               data-price='{$sp.sale_price*$discount|sprintf="%.2f",###}'
+                               data-market-price="{$sp.market_price}" data-id="{$sp.id}"/>
+                    {/volist}
+                {/eq}
             </div>
-            <div class="select_header">
-                <div class="select_header_img">
-                    <img src="#" width="100%" height="100%">
-                </div>
-
-                <div class="select_header_data">
-                    <div class="select_header_data_price">
-                        ￥{$product.sale_prices}
-                    </div>
-
-                    <div class="select_header_data_repertory">
-                        库存量：
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="select_mainselect">
-                <div class="select_mainselect_wrap">
-                    <div class="select_mainselect_text">尺寸 ：</div>
-                    <!--
-                    <div class="select_div">
-                        M
-                    </div>
-
-                    <div class="select_div">
-                        L
-                    </div>
-                    -->
-                    {volist name = "product['specs']" id="item"}
-                        <div class="select_div">
-                            {$item.name1}
-                        </div>
+            <dl class="pd-dsc clearfix" id="pd-dsc1" style='margin-top:8px;'>
+                <dt class="left">{$specs[0]['spd1name']}：</dt>
+                <dt>
+                <div class='pd-spec-dets clearfix'>
+                    {volist name="specsDistinct['a']['sps']" id="sp"}
+                        <div class='pd-spec-sx enable' href='javascript:;'
+                             data-det-id='{$sp.spec_det_id1}'>{$sp.det_name1}</div>
                     {/volist}
                 </div>
-
-                <div class="select_mainselect_wrap">
-                    <div class="select_mainselect_text">套餐：</div>
-                    <!--
-                    <div class="select_div">
-                       套餐一
-                    </div>
-                    <div class="select_div">
-                        套餐二
-                    </div>
-                    <div class="select_div">
-                        套餐三
-                    </div>
-                    -->
-                    {volist name = "product['specs']" id="item"}
-                    <div class="select_div">
-                        {$item.name2}
-                    </div>
+                </dt>
+            </dl>
+        {/neq}
+        {neq name="specsDistinct['b']['spd2name']" value=""}
+            <dl class="pd-dsc clearfix" id="pd-dsc2">
+                <dt class="left">{$specs[0]['spd2name']}：</dt>
+                <dt>
+                <div class='pd-spec-dets clearfix'>
+                    {volist name="specsDistinct['b']['sps']" id="sp"}
+                        <div class='pd-spec-sx enable' href='javascript:;'
+                             data-det-id='{$sp.spec_det_id2}'>{$sp.det_name2}</div>
                     {/volist}
                 </div>
-            </div>
+                </dt>
+            </dl>
+        {/neq}
 
-            <div class="select_num">
-                <p>购买数量 ：</p>
-                <div class="select_num_wrap">
-                    <div class="select_num_minus">
-                        -
+        <!-- 显示商家信息 -->
+        
+
+        <!-- 显示库存量 -->
+        <dl class="pd-dsc clearfix hidden" id="product_stock_wrap">
+            <dt>库存量：</dt>
+            <dt id="pd-stock">{$productInfo.product_instocks}</dt>
+        </dl>
+
+    {else /}
+
+        <!-- 下架信息 -->
+        <div id='productOffline'>对不起，该商品已下架</div>
+
+    {/eq}
+</div>
+
+{eq name="productInfo['product_online']" value="1"}
+    <header class="Thead" id="vpd-detail-header">产品详情</header>
+    <div id="vpd-content" class="notload">下拉加载详细介绍</div>
+{/eq}
+
+<!-- 随便逛逛 -->
+{notempty name="$slist"}
+    <header class="Thead">随便逛逛</header>
+    <div id="pd-recoment">
+        <div class='pd-box clearfix'>
+            {volist name="slist" id="sl"}
+                <a class="slist-item" href="{$docroot}?/vProduct/view/id={$sl.product_id}&showwxpaytitle=1">
+                    <div class='pd-box-inner'>
+                        <img src="{$sl.catimg}"
+                             alt='{$sl.product_name}'/>
+                        <p class='Elipsis'>{$sl.product_name}</p>
                     </div>
-
-                    <div class="select_num_num" data-num="1">
-                        1
-                    </div>
-
-                    <div class="select_num_add">
-                        +
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="select_footer_wrap">
-                <div class="select_footer_addcart">
-                    加入购物车
-                </div>
-
-                <div class="select_footer_buynow">
-                    立即购买
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--页面返回按钮-->
-    <div class="page_back">
-        <img src="{$docroot}public/static/images/weshop/pageback.svg" width="100%" height="100%">
-    </div>
-
-    <!--展示图片左右滑动区域-->
-    <div class="swiper-container">
-        <div class="swiper-wrapper">
-            <!--
-            <div class="swiper-slide red">Slide 1</div>
-            <div class="swiper-slide blue">Slide 2</div>
-            <div class="swiper-slide yellow">Slide 3</div>
-            -->
-            <!-- 循环加载图片 -->
-            {volist name="product['images']" id="item"}
-                <div class="swiper-slide">
-                    <img src="{$item.image_path}" width="100%" height="100%">
-                </div>
+                </a>
             {/volist}
         </div>
-    <!-- 如果需要分页器 -->
-        <div class="swiper-pagination"></div>
-
     </div>
+{/notempty}
 
-    <!--商品主要信息展示区-->
-    <div class="information_wrap">
-        <div class="information_name">
-            <p>{$product.product_name}</p>
-        </div>
+<!-- 加入购物车 -->
+<div id="appCartWrap" class="clearfix">
+    {eq name="productInfo['product_online']" value="1"}
+        {eq name="productInfo['product_prom']" value="0"}
+            <a class="button" id="addcart-button" data-prom="{$productInfo.product_prom}" data-add="1">加入购物车</a>
+        {/eq}
+        <a class="button" id="buy-button" data-prom="{$productInfo.product_prom}" data-add="0"
+        {eq name="productInfo['product_prom']" value="0"}style="width: 99%;"{/eq}>立即购买</a>
+    {else /}
+        <a class="button disable">已下架</a>
+    {/eq}
+    <a id="toCart" href="?/Order/Cart/"><i>0</i></a>
+</div>
 
-        <div class="information_price">
-            <p>￥{$product.sale_prices}</p>
-        </div>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 
-        <div class="information_extra">
-            <span id="information_extra_express">快递:￥{$product.product_expfee}</span>
-            <span id="information_extra_month">月销量:{$product.product_weight}</span>
-            <span id="information_extra_repertory">库存量:{$product.market_price}</span>
-        </div>
-    </div>
+<script type="text/javascript">
 
-    <!--选择尺寸套餐类型-->
-    <div class="select_wrap">
-        <div class="select_text">
-            选择 尺寸 套餐 类型
-        </div>
+    var productId = {$productid|default=0};
+    var comId = parseInt({$comid|default=0});
 
-        <div class="select_img">
-            <img src="{$docroot}public/static/images/weshop/icon_bar-right.png" width="100%" height="100%">
-        </div>
-    </div>
+    wx.config({
+        debug: false,
+        appId: '{$signPackage.appId}',
+        timestamp: {if condition="$signPackage['timestamp']"}{$signPackage.timestamp}{else /}0{/if},
+        nonceStr: '{$signPackage.nonceStr}',
+        signature: '{$signPackage.signature}',
+        jsApiList: ['previewImage', 'onMenuShareTimeline', 'onMenuShareAppMessage']
+    });
 
-    <!--宝贝评价-->
-    <div class="product_evaluate_wrap">
-        <div class="product_evaluate_header">
-            宝贝评价（1111）
-        </div>
+    if (comId > 0) {
+        var link = "http://" + window.location.host + "/?/vProduct/view/id=" + productId + "&showwxpaytitle=1&comid=" + comId;
+    } else {
+        var link = "http://" + window.location.host + "/?/vProduct/view/id=" + productId + "&showwxpaytitle=1";
+    }
 
-        <div class="last_product_evaluate">
-            <div class="evaluate_header">
-                <img src="{$docroot}public/static/images/weshop/face_normal.svg" width="100%">
-                <p>叶嘉永</p>
-            </div>
+    wx.ready(function () {
+        wx.onMenuShareTimeline({
+            title: '{$productInfo.product_name}',
+            link: '',
+            imgUrl: '{$productInfo.catimg}',
+            success: function () {
 
-            <div class="evaluate_text">
-                商品是正品哦！
-            </div>
-
-            <div class="evaluate_information">
-                <span>套餐类型:官方标配;</span>
-                <span>颜色分类:白色比卡丘</span>
-            </div>
-        </div>
-
-        <div class="product_evaluate_button_wrap">
-            <div class="product_evaluate_button">
-                查看全部评价
-            </div>
-        </div>
-
-    </div>
-
-    <!--宝贝详情-->
-    <div class="product_introduce_wrap">
-        <div class="product_introduce_header">
-            <div class="product_introduce_select introduce_select" id="product_select_introduce">
-                商品详情
-            </div>
-
-            <div class="product_introduce_select" id="product_select_data">
-                产品参数
-            </div>
-        </div>
-
-        <div class="product">
-            <!-- 商品介绍 -->
-            <p>这里是商品介绍</p>
-            {$product.product_desc}
-        </div>
-
-        <div class="product_data">
-            <!--产品参数-->
-            <p>这里是产品参数</p>
-        </div>
-
-    </div>
-
-    <footer>
-        <div class="footer footer_cart">
-            <div class="flex_wrap">
-                <div class="cart_collect_wrap">
-                    <img id="footer_cart_wrap" src="{$docroot}public/static/images/weshop/cart.svg" width="100%">
-                    <p>购物车</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer footer_collect">
-            <div class="flex_wrap">
-                <div class="cart_collect_wrap">
-                    <img src="{$docroot}public/static/images/weshop/love.svg" width="100%">
-                    <p>收藏</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="footer footer_right" id="footer_joincart">
-            加入购物车
-        </div>
-
-        <div class="footer footer_right" id="footer_buy">
-            立即购买
-        </div>
-
-    </footer>
-<!--    <p>您选择的商品ID号为：{$product.product_id}</p>
-    <p>商品名称：{$product.product_name}</p>
-    <p>商品简称：{$product.product_subname}</p>
-    <p>============商品信息==============</p>
-    <p>商品简介：{$product.product_subtitle}</p>
-    <p>商品大小：{$product.product_cat}</p>
-    <p>商品重量：{$product.product_weight}</p>
-    <p>商品产地：{$product.product_origin}</p>
-    <p>商品储存条件：{$product.product_storage}</p>
-    <p>商品单位：{$product.product_unit}</p>
-    <p>商品快递费用：{$product.product_expfee}</p>
-    <p>商品分类搜索索引：{$product.product_indexes}</p>
-    <p>============商品价格==============</p>
-    <p>商品市场价：{$product.market_price}</p>
-    <p>商品零售价：{$product.sale_prices}</p>
-    <p>商品折扣比例：{$product.product_prom_discount} 折</p>
-    <p>商品秒杀价 = 零售价 * 折扣比例：{php}echo ($product['sale_prices'] * ($product['product_prom_discount'] / 100));{/php}</p>
-    <p>============商家信息==============</p>
-    <p>TODO</p>
-    <p>============商品图片==============</p>
-    {volist name="product['images']" id="item"}
-        <p>第 {$item.image_id} 张图片路径：</p>
-        <p>{$item.image_path}</p>
-        <p>图片如下：</p>
-        <img src="{$item.image_path}">
-    {/volist}
-    <p>============商品详情==============</p>
-    {$product.product_desc}-->
-    <script language='javascript' src='http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js'> </script>
-    <script language="JavaScript" src="{$docroot}public/static/script/swiper.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            //****************************
-            //TODO 测试加入收藏功能，用完记得删除
-            //****************************
-            var pid = 1;//TODO 用于测试商品收藏功能的全局变量，商品ID
-            $(".cart_collect_wrap").bind('touchend',function () {
-                //向服务器提交信息
-
-                $.post("http://yejiayong.cn/weshop/Product/ajaxAlterProductLike", {
-                    //商品ID
-                    //要增加收藏，该处填写的id为正数商品ID号；移除收藏，该处填写的id为负数商品ID号
-                    id: pid
-                },function (data) {
-                    //返回的json里面包括code和msg两个条目
-                    //code表示返回码，当成功时返回0，失败时返回-1
-                    var code = data.code;
-                    //alert("已加入购物车");
-                    if (code == 0){
-                        if (pid > 0){
-                            alert("添加收藏成功");
-                            pid = -1 * pid;
-                        }else {
-                            alert("取消收藏成功");
-                            pid = -1 * pid;
-                        }
-                    }else{
-                        alert("加入失败");
-                    }
-                    $(".select_tab_wrap").hide().fadeOut(200);
-                });
-            });
-            //****************************
-            //TODO 测试加入购物车按钮功能，用完记得删除
-            //****************************
-            var test = [
-                {
-                    cart_id : 1,
-                    product_id : "product1",
-                    spec_id : "spec1",
-                    count : 5
-                },
-                {
-                    product_id : "product1",
-                    spec_id : "spec1",
-                    count : 5
-                },
-                {
-                    cart_id : 5,
-                    product_id : "product1",
-                    spec_id : "spec1",
-                    count : 5
-                }
-            ];
-            $.post("http://yejiayong.cn/weshop/Index/test2",{test : test},function () {
-                alert(test.name);
-            });
-            $(".select_footer_addcart").bind('touchend',function () {
-                //向服务器提交信息
-                $.post("http://yejiayong.cn/weshop/Cart/set", {
-                    //产品ID
-                    product_id: 1,
-                    //产品规格ID
-                    spec_id: 1,
-                    //要添加到购物车的数量
-                    count: 1
-                },function (data) {
-                    //返回的json里面包括code和msg两个条目
-                    //code表示返回码，当成功时返回0，失败时返回-1
-                    var code = data.code;
-                    //msg表示返回信息，成功返回"success"，失败返回"failed"
-                    var msg = data.msg;
-                    //alert("已加入购物车");
-                    if (code == 0){
-                        alert("已加入购物车");
-                    }else{
-                        alert("加入失败");
-                    }
-                    $(".select_tab_wrap").hide().fadeOut(200);
-                });
-            });
-//            页面返回按钮
-            $(".page_back").bind('touchstart',function () {
-               self.location = "http://yejiayong.cn/weshop/index/index.html";
-            });
-//            点击商品详情时切换为详情数据
-            $("#product_select_introduce").bind('touchstart',function () {
-               $(".product_data").css("display","none");
-               $("#product_select_data").removeClass("introduce_select");
-               $("#product_select_introduce").addClass("introduce_select");
-               $(".product").css("display","block");
-            });
-//            点击产品参数时切换为参数数据
-            $("#product_select_data").bind('touchstart',function () {
-               $("#product_select_introduce") .removeClass("introduce_select");
-               $(".product").css("display","none");
-               $("#product_select_data").addClass("introduce_select");
-               $(".product_data").css("display","block");
-            });
-
-//            点击选择产品参数
-            $(".select_div").bind('touchstart',function () {
-               $(this).parent().children().removeClass("select_div_choose");
-               $(this).addClass("select_div_choose");
-            });
-//            点击增减产品数量
-            $(".select_num_minus").bind('touchstart',function () {
-                var now_num = $(".select_num_num").attr("data-num");
-                if (now_num == 1){
-//                    如果为1时则不能减
-                    return false;
-                }else {
-                    now_num --;
-                    $(".select_num_num").attr("data-num",now_num);
-                    $(".select_num_num").text(now_num);
-//                    如果为1时则减号取消可用样式
-                    if (now_num  == 1){
-                        $(".select_num_minus").removeClass("select_num_minus_reduce");
-                    }
-                }
-            });
-
-            $(".select_num_add").bind('touchstart',function () {
-                var now_num = $(".select_num_num").attr("data-num");
-                now_num ++;
-                $(".select_num_num").attr("data-num",now_num);
-                $(".select_num_num").text(now_num);
-                $(".select_num_minus").addClass("select_num_minus_reduce");
-            });
-
-//            控制选择尺寸div显示与否
-            $(".select_wrap").bind('click',function () {
-                $(".select_tab_wrap").css("display","block");
-            });
-
-            $(".select_cancel").bind('touchend',function () {
-                $(".select_tab_wrap").fadeOut(200);
-                $(".select_tab_wrap").css("display","none");
-            })
+            }
         });
+        wx.onMenuShareAppMessage({
+            title: '{$productInfo.product_name}',
+            desc: '{$productInfo.product_name}',
+            link: link,
+            imgUrl: '{$productInfo.catimg}',
+            success: function () {
 
-        window.onload = function () {
-            $(".loading").fadeOut(1000);
-            $("body").fadeIn(1000);
+            }
+        });
+    });
 
-            //Swiper对象创建
-            var mySwiper = new Swiper ('.swiper-container', {
-                loop: false,
-                roundLengths:true,
-                pagination : '.swiper-pagination',
-                paginationType : 'fraction'
-            })
-        }
-    </script>
+
+</script>
+
+<script data-main="{$docroot}public/static/script/weshop/shop_vproduct.js"
+        src="http://apps.bdimg.com/libs/require.js/2.1.9/require.min.js"></script>
 </body>
 </html>
