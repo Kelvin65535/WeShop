@@ -265,7 +265,7 @@ require(['config'], function (config) {
         /**
          * 检查收藏
          */
-        $.get('?/vProduct/checkLike/id=' + productId, function (r) {
+        $.get('/weshop/Product/checkLike/id/' + productId, function (r) {
             if (r.ret_code === 0) {
                 $('.uc-add-like').addClass('fill');
             }
@@ -278,8 +278,8 @@ require(['config'], function (config) {
             if (node.hasClass('fill')) {
                 pid = (-1) * pid;
             }
-            $.post('?/vProduct/ajaxAlterProductLike/', {id: pid}, function (r) {
-                if (r > 0) {
+            $.post('/weshop/Product/ajaxAlterProductLike/', {id: pid}, function (r) {
+                if (r >= 0) {
                     if (!node.hasClass('fill')) {
                         Tiping.flas('收藏成功');
                     }

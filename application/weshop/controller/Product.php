@@ -206,8 +206,8 @@ class Product extends Controller
      * 传入参数：
      * id:要更改商品收藏状态的商品ID号，若要增加收藏则id = 商品id，移除收藏状态则id = 商品id的倒数
         返回json：
-        成功时返回：{"code": 0}
-        失败时返回：{"code": -1}
+        成功时返回：0
+        失败时返回：-1
         注释：
         id的使用示例：若要将id为1的商品加入收藏，则id值设置为1；若要将id为1的商品移除收藏，则id设置为-1
      */
@@ -223,36 +223,35 @@ class Product extends Controller
         if ($id > 0 && $openid != ''){
             $result = $product_model->addProductLike($openid, $id);
             if ($result > 0){
-                return json(['code' => 0]);
+                return json(0);
             }else{
-                return json(['code' => -1]);
+                return json(-1);
             }
 
         }else if ($id < 0 && $openid != ''){
             $id = abs($id);
             $result = $product_model->deleteProductLike($openid, $id);
             if ($result > 0){
-                return json(['code' => 0]);
+                return json(0);
             }else{
-                return json(['code' => -1]);
+                return json(-1);
             }
         }else {
-            return json(['code' => -1]);
+            return json(-1);
         }
     }
 
     /**
      * 检查该商品是否已收藏
-     * 使用POST方法
+     * 使用GET方法
      * data:
         id：要查询状态的商品ID号
        返回json：
-        若商品在收藏列表中：{"code": 0}
-        若不在收藏列表或查询失败：{"code": -1}
+        若商品在收藏列表中：{"ret_code": 0}
+        若不在收藏列表或查询失败：{"ret_code": -1}
      */
-    public function checkLike() {
+    public function checkLike($id) {
         $user_model = new User();
-        $id = input("post.id");
         if ($id > 0) {
             $openid = $user_model->getOpenId();
             $result = Db::name("client_product_likes")
@@ -260,12 +259,12 @@ class Product extends Controller
                 ->where("product_id", $id)
                 ->find();
             if (!empty($openid) && $result > 0) {
-                return json(['code' => 0]);
+                return json(['ret_code' => 0]);
             } else {
-                return json(['code' => -1]);
+                return json(['ret_code' => -1]);
             }
         } else {
-            return json(['code' => -1]);
+            return json(['ret_code' => -1]);
         }
     }
 
@@ -299,7 +298,7 @@ class Product extends Controller
         if ($id > 0) {
             $desc = Db::name('products_info')
                 ->where('product_id', $id)
-                ->value('products_desc');
+                ->value('product_desc');
             echo $desc;
             return;
         }

@@ -14,7 +14,7 @@ class Cart extends Model
     public function getCartData($openid, $uid){
         //加载模型
         $product_spec_model = new Productspec();
-
+        $user_model = new User();
 
         //从数据库获取用户数据
         $datas = Db::name('client_cart')
@@ -29,7 +29,8 @@ class Cart extends Model
         ];
 
         if (sizeof($datas) > 0){
-            //TODO 用户所在组的折扣
+            //用户所在组的折扣
+            $discount = $user_model->getDiscount($uid);
 
             //商品数量
             $product_count = 0;
@@ -61,7 +62,7 @@ class Cart extends Model
                     //供应商
                     $product_info['product_supplier'] = intval($product_info['product_supplier']);
                     //售价
-                    //$product_info['sale_price']       = floatval($product_spec['sale_price'] * $discount);
+                    $product_info['sale_price']       = floatval($product_spec['sale_price'] * $discount);
                     //市场价
                     $product_info['market_price']     = floatval($product_spec['market_price']);
                     //库存

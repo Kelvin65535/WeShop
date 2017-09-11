@@ -72,7 +72,6 @@
         {else /}
 
             {neq name="productInfo.sale_prices" value="0.00"}
-
                 {gt name="productInfo.market_price" value="0"}
                     <dl class="pd-dsc clearfix">
                         <dt>市场价：</dt>
@@ -206,7 +205,7 @@
             <a class="button" id="addcart-button" data-prom="{$productInfo.product_prom}" data-add="1">加入购物车</a>
         {/eq}
         <a class="button" id="buy-button" data-prom="{$productInfo.product_prom}" data-add="0"
-        {eq name="productInfo['product_prom']" value="0"}style="width: 99%;"{/eq}>立即购买</a>
+        {eq name="productInfo['product_prom']" value="1"}style="width: 99%;"{/eq}>立即购买</a>
     {else /}
         <a class="button disable">已下架</a>
     {/eq}
