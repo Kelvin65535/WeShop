@@ -71,28 +71,28 @@ class Gmess extends Controller
 
         // 首图
         if (input('?post.catimg')) {
-            $catimg = input('post.catimg/s');
+            $catimg = input('post.catimg');
         } else {
             $catimg = false;
         }
 
         // 描述
         if (input('?post.desc')) {
-            $digest = input('post.desc/s');
+            $digest = input('post.desc');
         } else {
             $digest = false;
         }
 
         // 内容
         if (input('?post.content')) {
-            $content = input('post.content/s');
+            $content = input('post.content');
         } else {
             $content = false;
         }
 
         // 标题
         if (input('?post.title')) {
-            $title = input('post.title/s');
+            $title = input('post.title');
         } else {
             $title = false;
         }
@@ -106,7 +106,7 @@ class Gmess extends Controller
 
         // 原文地址
         if (input('?post.content_source_url')) {
-            $content_source_url = input('post.content_source_url/s');
+            $content_source_url = input('post.content_source_url');
         } else {
             $content_source_url = false;
         }

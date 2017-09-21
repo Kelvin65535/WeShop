@@ -27,6 +27,11 @@ class Gmess extends Model
         $result =  Db::name('gmess_page')
             ->where('id', $id)
             ->find();
+        // 反转义斜杠字符
+        if ($result) {
+            $result['desc'] = stripslashes($result['desc']);
+            $result['content'] = stripslashes($result['content']);
+        }
         return $result ? $result : [];
     }
 
