@@ -181,10 +181,84 @@ class Wechatsdk extends Model
 
     /**
      * 转码unicode
-     * @param type $str
+     * @param string $str
      * @return type
      */
     public static function decodeUnicode($str) {
         return preg_replace_callback('/\\\\u([0-9a-f]{4})/i', create_function('$matches', 'return mb_convert_encoding(pack("H*", $matches[1]), "UTF-8", "UCS-2BE");'), $str);
+    }
+
+    /**
+     * 上传图片到微信服务器
+     * @param string $imagePath
+     * @return mixed
+     */
+    public static function upLoadImage($imagePath) {
+        $stoken   = self::getServiceAccessToken();
+        //$PostData = array("media" => "@" . $imagePath); 修正PHP5.6问题
+        $PostData = array("media" => new \CURLFile($imagePath));
+        $Result   = curl\Curl::post("https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=$stoken", $PostData, true);
+        $Result   = json_decode($Result, true);
+        return $Result;
+    }
+
+    /**
+     * 上传多媒体内容
+     * @param string $imagePath
+     * @param type $type
+     * @return mixed
+     */
+    public static function upLoadMedia($imagePath, $type = 'image') {
+        $stoken   = self::getServiceAccessToken();
+        //$PostData = array("media" => "@" . $imagePath); 修正PHP5.6问题
+        $PostData = array("media" => new \CURLFile($imagePath));
+        $Result   = curl\Curl::post("http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token=$stoken&type=$type", $PostData, true);
+        $Result   = json_decode($Result, true);
+        return $Result;
+    }
+
+    /**
+     * 上传永久素材
+     * @param int $thumb_media_id 图片ID
+     * @param string $title 标题
+     * @param string $content 内容
+     * @param string $digest 摘要
+     * @param int $show_cover_pic 显示图片在正文
+     * @return type
+     */
+    public static function upLoadGmess($thumb_media_id, $title, $content, $digest, $show_cover_pic = 1) {
+        $stoken   = self::getServiceAccessToken();
+        $PostData = array(
+            'articles' => array(
+                array(
+                    'thumb_media_id' => $thumb_media_id,
+                    'title' => $title,
+                    'content' => $content,
+                    'digest' => $digest,
+                    "show_cover_pic" => $show_cover_pic
+                )
+            )
+        );
+        $Result   = curl\Curl::post("https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=$stoken", str_replace('\/', '/', self::decodeUnicode(json_encode($PostData))));
+        return json_decode($Result, true);
+    }
+
+    /**
+     * 发送群发消息，高级接口
+     * @param type $mediaId
+     * @param type $istoAll
+     * @param type $groupId
+     * @return type
+     */
+    public static function sendGmessAll($mediaId, $istoAll = false) {
+        $stoken   = self::getServiceAccessToken();
+        $PostData = array(
+            'filter' => array(
+                "is_to_all" => $istoAll
+            ),
+            'mpnews' => array("media_id" => $mediaId),
+            "msgtype" => "mpnews"
+        );
+        return curl\Curl::post("https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=$stoken", json_encode($PostData));
     }
 }

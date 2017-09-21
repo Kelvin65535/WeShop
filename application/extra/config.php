@@ -50,5 +50,10 @@ return [
 
     //系统设置
     // 系统根目录
-    'shoproot' => '/'
+    'shoproot' => '/',
+
+    //其他设置
+    // 用于搜索微信公众号文章的SHOWAPI AppID和密钥
+    'showAPIAppID' => '46601',
+    'showAPISecret' => 'b8ad01d007a04c6781fc674b5e1e4413'
 ];

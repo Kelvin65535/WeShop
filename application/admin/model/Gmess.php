@@ -24,9 +24,10 @@ class Gmess extends Model
      * @return
      */
     public function getGmess($id) {
-        return Db::name('gmess_page')
+        $result =  Db::name('gmess_page')
             ->where('id', $id)
             ->find();
+        return $result ? $result : [];
     }
 
     /**
@@ -82,7 +83,7 @@ class Gmess extends Model
 
     /**
      * 编辑素材内容
-     * @param int $msgId
+     * @param int $msgId 素材id，若id=0则表示新增id
      * @param type $title
      * @param type $content
      * @param type $desc
@@ -95,7 +96,7 @@ class Gmess extends Model
         $content = addslashes($content);
         if ($msgId > 0) {
             // 修改素材
-            return Db::name('gmess_pages')
+            return Db::name('gmess_page')
                 ->where('id', $msgId)
                 ->update(array(
                     'title' => $title,
@@ -120,7 +121,7 @@ class Gmess extends Model
 //                ))->where('id', $msgId)->exec();
         } else {
             // 插入数据
-            return Db::name('gmess_pages')
+            return Db::name('gmess_page')
                 ->insert(array(
                     'title' => $title,
                     'content' => $content,

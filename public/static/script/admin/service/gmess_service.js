@@ -29,7 +29,7 @@ services.factory('Gmess', ['$http', function ($http) {
          * @returns {*}
          */
         getCloudCateGory: function () {
-            return $http.get('?/wGmess/getCloudCategorys/', {
+            return $http.get('/admin/Gmess/getCloudCategorys/', {
                 params: {}
             }).error(function (ret) {
                 _process_error(ret);
@@ -41,7 +41,7 @@ services.factory('Gmess', ['$http', function ($http) {
          * @returns {*}
          */
         getCloudList: function (p) {
-            return $http.post('?/wGmess/getCloudList/', $.param(p), {
+            return $http.post('/admin/Gmess/getCloudList/', $.param(p), {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
             }).error(function (ret) {
                 _process_error(ret);
@@ -64,7 +64,7 @@ services.factory('Gmess', ['$http', function ($http) {
          * @returns {*}
          */
         sendGmess: function(p){
-            return $http.post('?/wGmess/sendGemss/', $.param(p), {
+            return $http.post('/admin/Gmess/sendGemss/', $.param(p), {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
             }).error(function (ret) {
                 _process_error(ret);
