@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Banners;
 use app\admin\model\Gmess;
 use app\admin\model\Products;
 use app\admin\model\Productspec;
@@ -305,7 +306,19 @@ class mainpage extends Controller
         $userlevel_model = new Userlevel();
         $this->assign('levels', $userlevel_model->getList());
         return $this->fetch('mainpage/users/user_level');
-        $this->show(self::TPL . 'users/user_level.tpl');
+    }
+
+    /**
+     *
+     *  群发设置
+     *
+     */
+
+    /**
+     * 素材列表
+     */
+    public function gmess_list() {
+        return $this->fetch('mainpage/gmess/gmess_list');
     }
 
     /********************
@@ -365,6 +378,69 @@ class mainpage extends Controller
         $categorys = $product_model->getAllCats();
         $this->assign('categorys', $categorys);
         return $this->fetch('mainpage/settings/settings_menu');
+    }
+
+    /**
+     * 广告 Banner 列表设置
+     */
+    public function settings_banners() {
+        $banner_model = new Banners();
+        $arrPos  = array(
+            '首页顶部',
+            '首页尾部',
+            '个人中心',
+            '搜索板块',
+            '全站顶部',
+            '首页中间广告展示'
+        );
+        $arrType = array(
+            '产品分类',
+            '产品列表',
+            '图文消息',
+            '超链接'
+        );
+        $banner  = $banner_model->getBanners();
+        foreach ($banner as &$ba) {
+            $ba['pos']  = $arrPos[$ba['banner_position']];
+            $ba['type'] = $arrType[$ba['reltype']];
+        }
+        $this->assign('banners', $banner);
+        return $this->fetch('mainpage/settings/settings_banners');
+    }
+
+    /**
+     * 编辑banner设置
+     * @param type $Q
+     */
+    public function settings_banner_edit($id = 0) {
+        $product_model = new Products();
+        $gmess_model = new Gmess();
+        $banner_model = new Banners();
+
+        if (isset($id) && $id > 0) {
+            $banner          = $banner_model->getOne($id);
+
+            switch ($banner['reltype']) {
+                case 0:
+                    // 分类
+                    break;
+                case 1:
+                    // 商品池
+                    $this->assign('products', $product_model->getIn($banner['relid']));
+                    break;
+                case 2:
+                    // 图文消息
+                    $this->assign('gm', $gmess_model->getGmess($banner['relid']));
+                    break;
+            }
+
+            $this->assign('banner', $banner);
+        }
+
+        $categorys = $product_model->getAllCats();
+        $this->assign('gmess', $gmess_model->getGmessList());
+        $this->assign('categorys', $categorys);
+        $this->show(self::TPL . 'settings/banner_edit.tpl');
     }
 
     /**

@@ -143,4 +143,20 @@ class Util extends Model
     public static function digitDefault($input, $default = 0) {
         return (is_numeric($input) && $input > 0) ? intval($input) : $default;
     }
+
+    /**
+     * 获取完整根域名
+     * @return string
+     */
+    public static function getHOST() {
+        return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://" . $_SERVER['HTTP_HOST'];
+    }
+
+    /**
+     * 获取根路径
+     * @return string
+     */
+    public static function getROOT() {
+        return self::getHOST() . config('config.shoproot');
+    }
 }

@@ -19,7 +19,7 @@ services.factory('Gmess', ['$http', function ($http) {
          * @returns {*}
          */
         getList: function (p) {
-            return $http.get('?/wGmess/getGmessList/', {
+            return $http.get('/admin/Gmess/getGmessList/', {
                 params: p
             }).error(function (ret) {
                 _process_error(ret);

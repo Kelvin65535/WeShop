@@ -2,6 +2,7 @@
 
 namespace app\admin\controller;
 
+use app\admin\model\Banners;
 use app\admin\model\Products;
 use app\wechat\model\Wechatsdk;
 use think\Controller;
@@ -89,6 +90,34 @@ class Mainajax extends Controller
     public function ajaxSetWechatMenu() {
         $rst = WechatSdk::setMenu(input('post.menu'));
         return json($rst);
+    }
+
+    /**
+     * 设置广告列表
+     */
+    public function settings_banners() {
+        $banners_model = new Banners();
+        $arrPos  = array(
+            '首页顶部',
+            '首页尾部',
+            '个人中心',
+            '搜索板块',
+            '全站顶部',
+            '首页中间广告展示'
+        );
+        $arrType = array(
+            '产品分类',
+            '产品列表',
+            '图文消息',
+            '超链接'
+        );
+        $banner  = $banners_model->getBanners();
+        foreach ($banner as &$ba) {
+            $ba['pos']  = $arrPos[$ba['banner_position']];
+            $ba['type'] = $arrType[$ba['reltype']];
+        }
+        $this->assign('banners', $banner);
+        $this->show(self::TPL . 'settings/banners.tpl');
     }
 
     /**
