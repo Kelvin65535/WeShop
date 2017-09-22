@@ -189,7 +189,6 @@ class mainpage extends Controller
      * @param type $Query
      */
     public function alter_category($id) {
-        //$id = intval($Query->id);
         if (is_numeric($id)) {
             $product_model = new Products();
             $cati      = $product_model->getCatInfo($id);

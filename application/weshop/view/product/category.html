@@ -14,13 +14,12 @@
 
 <body style="overflow:hidden;padding:0;-webkit-overflow-scrolling: none;">
 
-{include file="/global/top_nav" /}
-
 <input type="hidden" value="{$searchkey}" id="searchkey" />
 <input type="hidden" value="{$cat}" id="cat" />
 <input type="hidden" value="{$serial_id}" id="serial_id" />
 <input type="hidden" value="{$orderby}" id="orderby" />
 
+{include file="/global/search_box" /}
 
 <div class="clearfix" id="viewCat">
     <div id="viewCatLeft">

@@ -199,4 +199,22 @@ class Mainajax extends Controller
         }
     }
 
+    /**
+     * 编辑banner信息
+     */
+    public function modiBanner() {
+        $id = input("?post.id") ? input("post.id/d") : 0;
+        $name = input("?post.name") ? input("post.name") : '';
+        $relId = input("?post.relId") ? input("post.relId") : false;
+        $sort = input("?post.sort") ? input("post.sort") : 0;
+        $img = input("?post.img") ? input("post.img") : false;
+        $pos = input("?post.pos") ? input("post.pos") : 0;
+        $type = input("?post.type") ? input("post.type") : 0;
+        $href = input("?post.href") ? input("post.href") : '#';
+        $exp = input("?post.exp") ? input("post.exp") : '';
+
+        $banner_model = new Banners();
+        echo $banner_model->modiBanner($id, $name, $img, $pos, $type, $relId, $sort, $href, $exp);
+    }
+
 }

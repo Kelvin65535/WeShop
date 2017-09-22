@@ -314,6 +314,20 @@ class Products extends Model
     }
 
     /**
+     * 获取系列信息
+     * @param type $id
+     * @return boolean
+     */
+    public function getSerialInfo($id) {
+        if (!is_numeric($id)) {
+            return false;
+        }
+        return Db::name('product_serials')
+            ->where('id', $id)
+            ->find();
+    }
+
+    /**
      * 获取所有产品分类列表，递归
      * @param int $catParent 父级分类
      * @param boolean $cache 缓存开关
@@ -491,6 +505,21 @@ class Products extends Model
             return $productInfo;
         } else {
             return false;
+        }
+    }
+
+    /**
+     *
+     * @param type $catId
+     * @param type $level
+     * @return type
+     */
+    public function getCatIdUtilLevel($catId, $level) {
+        $info = $this->getCatInfo($catId);
+        if ($info['cat_level'] == $level) {
+            return $catId;
+        } else {
+            return $this->getCatIdUtilLevel($info['cat_parent'], $level);
         }
     }
 }

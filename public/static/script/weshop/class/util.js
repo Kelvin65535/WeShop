@@ -76,6 +76,7 @@ define(['jquery'], function ($) {
         return document.querySelector(str);
     };
 
+    // 搜索监听函数
     util.searchListen = function () {
         $('.search-w-box').bind('submit', function () {
             var form = this;
@@ -84,8 +85,8 @@ define(['jquery'], function ($) {
                 return;
             } else {
                 var target = inp.attr('targ');
-                target = encodeURIComponent(target + '&searchkey=' + inp.val());
-                location.href = shoproot + '?/vSearch/rd/href=' + target + '&searchkey=' + encodeURI(inp.val());
+                target = encodeURIComponent(target + '/searchkey/' + inp.val());
+                location.href = '/weshop/Search/rd?href=' + target + '&searchkey=' + encodeURI(inp.val());
             }
             return false;
         });

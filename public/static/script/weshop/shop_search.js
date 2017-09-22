@@ -8,6 +8,10 @@
  * @link        http://www.iwshop.cn
  */
 
+/**
+ * 2017.9.22：该搜索函数位于util.js
+ */
+
 var priceHashId = 0;
 
 require(['config'], function(config) {
@@ -35,7 +39,7 @@ function searchdo(form) {
     if (inp.val() === '')
         return;
     var target = inp.attr('targ');
-    target = encodeURI(target + '&searchkey=' + inp.val());
+    target = encodeURI(target + '/searchkey/' + inp.val());
     window.location.href = 'http://' + document.domain +
             (window.location.port ? ':' + window.location.port : '') + window.location.pathname + '?/' + target;
 }

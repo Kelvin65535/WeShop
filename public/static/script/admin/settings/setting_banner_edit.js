@@ -86,6 +86,11 @@ requirejs(['util', 'fancyBox', 'datatables', 'Spinner', 'jUploader', 'ztree', 'z
     fnFancyBox('#sProduct', function () {
         $('.fancybox-skin').css('background', '#fff');
 
+        // 初始化目录树
+        treeLoader.init('#pds-catLeft', '/admin/Product/ajaxGetCategroys/', function () {
+
+        });
+
         // 目录树点击回调函数
         treeLoader.setting.callback.onClick = function (event, treeId, treeNode) {
             $('#pds-pdright').html('');
@@ -96,11 +101,6 @@ requirejs(['util', 'fancyBox', 'datatables', 'Spinner', 'jUploader', 'ztree', 'z
                 $('#okSProduct').bind('click', okSProduct);
             });
         };
-
-        // 初始化目录树
-        treeLoader.init('#pds-catLeft', '/admin/Product/ajaxGetCategroys/', function () {
-
-        });
 
     });
 
@@ -180,7 +180,7 @@ requirejs(['util', 'fancyBox', 'datatables', 'Spinner', 'jUploader', 'ztree', 'z
             var id = $(this).attr('data-id');
             if (id > 0) {
                 // [HttpPost]
-                $.post('/admin/Mainaja/ajaxDeleteBanner/', {
+                $.post('/admin/Mainajax/ajaxDeleteBanner/', {
                     id: (-1) * id
                 }, function (res) {
                     if (res > 0) {

@@ -117,8 +117,69 @@ class Product extends Controller
         }
     }
 
-    public function viewList(){
+    /**
+     * 商品列表
+     * @param type $Query
+     */
+    public function viewList($brand = 0, $page = 0, $searchkey = '', $serial = false, $cat = false, $orderby = "", $level = false, $in = false) {
+        $user_model = new User();
+        $product_model = new Products();
+        $openid = $user_model->getOpenId();
 
+//        !isset($Query->brand) && $Query->brand = 0;
+//        !isset($Query->page) && $Query->page = 0;
+//        !isset($Query->searchkey) && $Query->searchkey = '';
+//        !isset($Query->serial) && $Query->serial = false;
+//        !isset($Query->cat) && $Query->cat = false;
+//        !isset($Query->orderby) && $Query->orderby = "";
+//        !isset($Query->level) && $Query->orderby = false;
+//        $Query->searchkey = urldecode($Query->searchkey);
+
+        $searchkey = urldecode($searchkey);
+//
+//        $this->cacheId = $this->getRequestHash();
+
+        // 推荐com，90分钟
+//        if (!isset($this->pGet['com']) && isset($Query->com)) {
+//            setcookie("com", $Query->com, time() + 5400);
+//        }
+
+        // params
+        if ($searchkey != '') {
+            $catInfo = array(
+                'cat_id' => $cat,
+                'cat_name' => $searchkey . ' 的搜索结果'
+            );
+        } else if ($serial) {
+            $serialInfo = $product_model->getSerialInfo($serial);
+            $catInfo    = array(
+                'cat_name' => $serialInfo['serial_name']
+            );
+        } else if ($brand) {
+            $catInfo = array(
+                //'cat_name' => $this->Db->getOne("SELECT `brand_name` FROM `product_brand` WHERE `id` = $Query->brand;")
+                'cat_name' => Db::name('product_brand') -> where('id', $brand) -> value('brand_name')
+            );
+        } else if ($cat) {
+            $catInfo = $product_model->getCatInfo($cat);
+        } else {
+            $catInfo = array(
+                'cat_name' => '商品列表'
+            );
+        }
+
+        $this->assign('brand', $brand);
+        $this->assign('serial', $serial);
+        //$this->assign('query', false);
+        $this->assign('searchkey', $searchkey);
+        $this->assign('cat', $cat);
+        $this->assign('level', $level);
+        $this->assign('catInfo', $catInfo);
+        $this->assign('orderby', $orderby);
+        $this->assign('title', $catInfo['cat_name']);
+        $this->assign('in', $in);
+
+        return $this->fetch('product/view_list');
     }
 
     /**
@@ -187,18 +248,185 @@ class Product extends Controller
         $product_model->upReadi($id);
 
         return $this->fetch();
-        // echo "openid"; dump($openid);
-        // echo "isSubscribed"; dump($isSubscribed);
-        // echo "productid"; dump($id);
-        // echo "title"; dump($product_info['product_name']);
-        // echo "productInfo"; dump($product_info);
-        // echo "specs"; dump($specs);
-        // echo "specsDistinct"; dump($specsDistinct);
-        // echo "images"; dump($product_info['images']);
-        // echo "images_count"; dump(count($product_info['images']));
     }
 
+    /**
+     * Ajax返回商品列表 分页
+     * @param type $Query
+     */
+    public function ajaxProductList() {
 
+        $product_model = new Products();
+        $product_model_admin = new \app\admin\model\Products();
+        // 搜索条件
+        $searchkey = input('?get.searchKey') ? urldecode(input('get.searchKey')) : false;
+        $in = input('?get.in') ? urldecode(input('get.in')) : false;
+        // 商品系列
+        $serial = input('?get.serial') ? input('get.serial') : false;
+        // 系列等级
+        $level = input('?get.level') ? input('get.level') : 0;
+        // 分页号
+        $page = input('?get.page') ? input('get.page') : 0;
+        // 商品分类
+        $cat = input('?get.cat') ? input('get.cat') : 1;
+        // 列表宫格样式标记
+        $stype = input('?get.stype') ? input('get.stype') : false;
+        // 特殊分页标记
+        if ($page != 0) {
+            $pdlists1 = cookie('pdlist-serial');
+            $pdlists2 = cookie('pdlist-start');
+        } else {
+            $pdlists1 = false;
+            $pdlists2 = 0;
+        }
+        // 排序
+        if (!input('?get.orderby') || input('get.orderby') == "") {
+            $orderby = 'product_cat ASC';
+        } else {
+            $orderby = trim(urldecode(input('get.orderby')));
+        }
+
+        //TODO 修正children
+        if (intval($cat) > 0) {
+            $children = $product_model->get_children($cat);
+        } else {
+            $children = '';
+        }
+        // 数据处理
+        if ($serial) {
+            // 系列展示列表
+            if (is_numeric($serial)) {
+
+                $_categorys = $product_model->getCategoryByLevel($level, $cat);
+
+                $categorys = array();
+                foreach ($_categorys as $ca) {
+                    $categorys[$ca['cat_id']] = array(
+                        'cat_image' => $ca['cat_image'],
+                        'cat_name' => $ca['cat_name'],
+                        'cat_id' => $ca['cat_id'],
+                        'pd' => array()
+                    );
+                }
+
+                if ($searchkey) {
+                    //TODO weshop_orders_detail数据库为全称，修改为加上前缀
+                    $pds = Db::name('products_info info')
+                        ->join('weshop_product_onsale onsale', 'info.product_id = onsale.product_id', 'LEFT')
+                        ->join('weshop_product_serials serial', 'serial.id = info.product_serial', 'LEFT')
+                        ->join('weshop_product_category category', 'category.cat_id = info.product_cat', 'LEFT')
+                        ->where('is_delete', '<>', 1)
+                        ->where('product_online', 1)
+                        ->where('product_name', 'LIKE', "%%$searchkey%%")
+                        ->order($orderby)
+                        ->limit($pdlists2, 1000)
+                        ->field([
+                            'info.*',
+                            'onsale.sale_prices',
+                            'category.cat_parent',
+                            "(SELECT SUM(product_count) FROM `weshop_orders_detail` WHERE `weshop_orders_detail`.product_id = `info`.product_id) AS sale_count"
+                        ])
+                        ->select();
+                } else {
+                    $pds = Db::name('products_info info')
+                        ->join('weshop_product_onsale onsale', 'info.product_id = onsale.product_id', 'LEFT')
+                        ->join('weshop_product_serials serial', 'serial.id = info.product_serial', 'LEFT')
+                        ->join('weshop_product_category category', 'category.cat_id = info.product_cat', 'LEFT')
+                        ->where('is_delete', '<>', 1)
+                        ->where('product_online', 1)
+                        ->order($orderby)
+                        ->limit($pdlists2, 1000)
+                        ->field([
+                            'info.*',
+                            'onsale.sale_prices',
+                            'category.cat_parent',
+                            "(SELECT SUM(product_count) FROM `weshop_orders_detail` WHERE `weshop_orders_detail`.product_id = `info`.product_id) AS sale_count"
+                        ])
+                        ->select();
+                }
+
+                // 已加载商品列表数量
+                $pdLoaded = count($pds);
+
+                foreach ($pds as $pd) {
+                    if (!array_key_exists($pd['product_cat'], $categorys)) {
+                        // level catid 转换
+                        $catId = $product_model->getCatIdUtilLevel($pd['product_cat'], $level);
+                    } else {
+                        $catId = $pd['product_cat'];
+                    }
+                    $categorys[$catId]['pd'][] = $pd;
+                }
+
+                cookie('pdlist-start', $pdlists2 + $pdLoaded);
+                $this->assign('pdloaded', $pdLoaded);
+                $this->assign('categorys', $categorys);
+                unset($pds);
+                unset($_categorys);
+            }
+        } else {
+            // 搜索展示列表
+            $pdLoaded = 0;
+            $limit    = 10;
+            // 获取所有系列
+            $serials      = $product_model_admin->getSerials($pdlists1);
+            $serialsCount = count($serials) - 1;
+//
+//            if (isset($Query->searchKey) && $Query->searchKey != '') {
+//                $Query->searchKey = urldecode($Query->searchKey);
+//            }
+
+            foreach ($serials as $index => &$seri) {
+                $seri['s'] = $index == 0 && $page != 0;
+                // 商品列表
+
+                $where = [];
+                if ($in) {$where['in'] = $in; }
+                if ($searchkey) {$where['po.`product_name`'] = ['LIKE', "%%$searchkey%%"]; }
+
+                $seri['pd'] = Db::name('products_info info')
+                    ->join('weshop_product_onsale onsale', 'info.product_id = onsale.product_id', 'LEFT')
+                    ->join('weshop_product_serials serial', 'serial.id = info.product_serial', 'LEFT')
+                    ->where('is_delete', '<>', 1)
+                    ->where('product_online', 1)
+                    ->where(intval($cat) > 0 ? $children : '')
+                    ->where($where)
+                    ->order($orderby)
+                    ->limit($pdlists2, 1000)
+                    ->select();
+
+                // 商品计数
+                $seri['pdCount'] = count($seri['pd']);
+                $pdLoaded += $seri['pdCount'];
+                $limit -= $seri['pdCount'];
+                if ($limit <= 0 || $index == $serialsCount) {
+                    cookie('pdlist-serial', $seri['sort']);
+                    if ($seri['sort'] == $pdlists1) {
+                        cookie('pdlist-start', $pdlists2 + $seri['pdCount']);
+                    } else {
+                        cookie('pdlist-start', $seri['pdCount']);
+                    }
+                    $serials = array_slice($serials, 0, $index + 1);
+                    break;
+                }
+                $pdlists2 = 0;
+            }
+            $this->assign('pdloaded', $pdLoaded);
+        }
+        $this->assign('serials', $serials);
+
+
+        // 缓存文件判断加载位置
+        if ($serial) {
+            // 系列产品列表
+            $tpl = 'product/ajaxproductlist_serials';
+        } else {
+            $tpl = 'product/ajaxproductlist';
+        }
+
+        // final show
+        $this->show($tpl);
+    }
 
     /**
      * ajax切换商品收藏状态
