@@ -1,7 +1,7 @@
-{include file='../__header.tpl'}
-<link href="{$docroot}static/css/jquery.datetimepicker.css?v={$cssversion}" type="text/css" rel="Stylesheet" />
-<i id="scriptTag">{$docroot}static/script/Wdmin/settings/banner_edit.js</i>
-<input type="hidden" value="{$smarty.server.HTTP_REFERER}" id="http_referer" />
+{include file='mainpage/header' /}
+<link href="{$docroot}public/static/css/jquery.datetimepicker.css" type="text/css" rel="Stylesheet" />
+<i id="scriptTag">{$docroot}public/static/script/admin/settings/setting_banner_edit.js</i>
+<input type="hidden" value="{$Think.server.HTTP_REFERER}" id="http_referer" />
 <input type="hidden" value="{$banner.relid}" id="relid" />
 <input type="hidden" value="{$banner.reltype}" id="relType" />
 <div class="clearfix" style="padding:10px 20px;padding-bottom: 65px;">
@@ -28,11 +28,11 @@
             <span>对应类型</span>
         </div>
         <div class="fv2Right">
-            <select id="bn-type" style="color:#666">
-                <option value="0" data-hash="hashCat" {if $banner.reltype eq 0}selected{/if}>产品分类</option>
-                <option value="1" data-hash="hashProduct" {if $banner.reltype eq 1}selected{/if}>产品列表</option>
-                <option value="2" data-hash="hashGmess" {if $banner.reltype eq 2}selected{/if}>图文消息</option>
-                <option value="3" data-hash="hashLink" {if $banner.reltype eq 3}selected{/if}>超链接</option>
+            <select id="bn-type" style="color:#666">\
+                <option value="0" data-hash="hashCat" {eq name="banner['reltype']" value="0"}selected{/eq}>产品分类</option>
+                <option value="1" data-hash="hashProduct" {eq name="banner['reltype']" value="1"}selected{/eq}>产品列表</option>
+                <option value="2" data-hash="hashGmess" {eq name="banner['reltype']" value="2"}selected{/eq}>图文消息</option>
+                <option value="3" data-hash="hashLink" {eq name="banner['reltype']" value="3"}selected{/eq}>超链接</option>
             </select>
             <div class='fv2Tip'>滚动图对应跳转的类型，可以是一到多个产品，也可以是某个产品分类，也可以是某个图文消息</div>
         </div>
@@ -60,12 +60,12 @@
             <a id="sGmess" href="?/WdminPage/ajax_gmess_list/" class="wd-btn primary fancybox.ajax" data-fancybox-type="ajax" style="margin:0;width:100%;" data-id="">选择素材</a>
             <div id="GmessItem" class="clearfix">
                 {if $gm}
-                <div class="gmBlock" data-id="{$gm.id}">
-                    <a class="sel hov"></a>
-                    <p class="title Elipsis">{$gm.title}</p>
-                    <img src="{$docroot}uploads/gmess/{$gm.catimg}" />
-                    <p class="desc Elipsis">{$gm.desc}</p>
-                </div>
+                    <div class="gmBlock" data-id="{$gm.id}">
+                        <a class="sel hov"></a>
+                        <p class="title Elipsis">{$gm.title}</p>
+                        <img src="{$docroot}uploads/gmess/{$gm.catimg}" />
+                        <p class="desc Elipsis">{$gm.desc}</p>
+                    </div>
                 {/if}
             </div>
             <div class='fv2Tip' id="gmessTip">请点击选择图文素材</div>
@@ -78,11 +78,11 @@
             <span>选择产品</span>
         </div>
         <div class="fv2Right">
-            <a id="sProduct" href="?/FancyPage/ajaxSelectProduct/" class="wd-btn primary fancybox.ajax" data-fancybox-type="ajax" style="margin:0;width:389px;" data-id="">选择产品</a>
+            <a id="sProduct" href="/admin/Fancypage/ajaxSelectProduct/" class="wd-btn primary fancybox.ajax" data-fancybox-type="ajax" style="margin:0;width:389px;" data-id="">选择产品</a>
             <div class='fv2Tip hidden' id="spdCount">已选择100个产品</div>
             <div id="ProductItem" class="clearfix">
                 {if $products}
-                {include file='../fancy/ajaxPdBlocks.tpl'}
+                    {include file='fancypage/ajax_pd_blocks'}
                 {/if}
             </div>
             <div class='fv2Tip' id="spdTip">请点击选择产品</div>
@@ -96,15 +96,21 @@
         </div>
         <div class="fv2Right">
             <select id="pd-cat-select" style="color:#666">
-                {foreach from=$categorys item=cat1}
-                <option value="{$cat1.dataId}" {if $banner.relid eq $cat1.dataId}selected{/if}>{$cat1.name}</option>
-                {foreach from=$cat1.children item=cat2}
-                <option value="{$cat2.dataId}" {if $banner.relid eq $cat2.dataId}selected{/if}>-- {$cat2.name}</option>
-                {foreach from=$cat2.children item=cat3}
-                <option value="{$cat3.dataId}" {if $banner.relid eq $cat3.dataId}selected{/if}>---- {$cat3.name}</option>
-                {/foreach}
-                {/foreach}
-                {/foreach}
+                {present name="categorys"}
+                {volist name="categorys" id="cat1"}
+                <option value="{if $cat1.dataId}{$cat1.dataId}{/if}" {eq name="banner['relid']" value="$cat1['dataId']"}selected{/eq}>{$cat1.name}</option>
+                    {present name="cat1['children']"}
+                    {volist name="cat1['children']" id="cat2"}
+                    <option value="{if $cat2.dataId}{$cat2.dataId}{/if}" {eq name="banner['relid']" value="$cat2['dataId']"}selected{/eq}>-- {$cat2.name}</option>
+                        {present name="cat2['children']"}
+                        {volist name="cat2['children']" id="cat3"}
+                        <option value="{if $cat3.dataId}{$cat3.dataId}{/if}" {eq name="banner['relid']" value="$cat3['dataId']"}selected{/eq}>---- {$cat3.name}</option>
+                        {/volist}
+                        {/present}
+                    {/volist}
+                    {/present}
+                {/volist}
+                {/present}
             </select>
             <div class='fv2Tip'>滚动图对应的分类</div>
         </div>
@@ -116,12 +122,12 @@
         </div>
         <div class="fv2Right">
             <select id="bn-position" style="color:#666">
-                <option value="0" {if $banner.banner_position eq 0}selected{/if}>首页顶部</option>
-                <option value="1" {if $banner.banner_position eq 1}selected{/if}>首页尾部</option>
-                <option value="2" {if $banner.banner_position eq 2}selected{/if}>个人中心</option>
-                <option value="3" {if $banner.banner_position eq 3}selected{/if}>搜索板块</option>
-                <option value="4" {if $banner.banner_position eq 4}selected{/if}>全站顶部</option>
-                <option value="5" {if $banner.banner_position eq 5}selected{/if}>首页中间广告展示</option>
+                <option value="0" {eq name="banner['banner_position']" value="0"}selected{/eq}>首页顶部</option>
+                <option value="1" {eq name="banner['banner_position']" value="1"}selected{/eq}>首页尾部</option>
+                <option value="2" {eq name="banner['banner_position']" value="2"}selected{/eq}>个人中心</option>
+                <option value="3" {eq name="banner['banner_position']" value="3"}selected{/eq}>搜索板块</option>
+                <option value="4" {eq name="banner['banner_position']" value="4"}selected{/eq}>全站顶部</option>
+                <option value="5" {eq name="banner['banner_position']" value="5"}selected{/eq}>首页中间广告展示</option>
             </select>
             <div class='fv2Tip'>滚动图放置的位置</div>
         </div>
@@ -137,9 +143,9 @@
                     <input type="hidden" value="{$banner.banner_image}" id="banner_image" />
                     <div id="loading" style="transition-duration: .2s;"></div>
                     <img id="catimage" src="{$banner.banner_image}" />
-                    {if $banner.banner_image eq ''}
-                    <div style='line-height: 100px;color:#777;' class='align-center' id="cat_none_pic">无图片</div>
-                    {/if}
+                    {eq name="banner['banner_image']" value=""}
+                        <div style='line-height: 100px;color:#777;' class='align-center' id="cat_none_pic">无图片</div>
+                    {/eq}
                     <div class="align-center top10">
                         <a class="wd-btn primary" id="alter_categroy_image" href="javascript:;">更换图片</a>
                     </div>
@@ -162,8 +168,8 @@
 </div>
 <div class="fix_bottom fixed">
     <a class="wd-btn primary" id='save' data-id='{$banner.id}' href="javascript:;">保存</a>
-    {if $banner.id > 0}<a class="wd-btn delete" id='delete' data-id='{$banner.id}' href="javascript:;">删除</a>{/if}
+    {if condition="$banner.id > 0"}<a class="wd-btn delete" id='delete' data-id='{$banner.id}' href="javascript:;">删除</a>{/if}
     <a class="wd-btn default" href="javascript:;" onclick="location.href = $('#http_referer').val();">返回</a>
 </div>
 
-{include file='../__footer.tpl'} 
+{include file='mainpage/footer' /}

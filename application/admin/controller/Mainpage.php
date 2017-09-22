@@ -417,6 +417,9 @@ class mainpage extends Controller
         $gmess_model = new Gmess();
         $banner_model = new Banners();
 
+        $banner = false;
+        $gm = false;
+        $products = false;
         if (isset($id) && $id > 0) {
             $banner          = $banner_model->getOne($id);
 
@@ -426,21 +429,23 @@ class mainpage extends Controller
                     break;
                 case 1:
                     // 商品池
-                    $this->assign('products', $product_model->getIn($banner['relid']));
+                    $products = $product_model->getIn($banner['relid']);
                     break;
                 case 2:
                     // 图文消息
-                    $this->assign('gm', $gmess_model->getGmess($banner['relid']));
+                    $gm = $gmess_model->getGmess($banner['relid']);
                     break;
             }
 
-            $this->assign('banner', $banner);
         }
-
         $categorys = $product_model->getAllCats();
+
+        $this->assign('banner', $banner);
+        $this->assign('gm', $gm);
+        $this->assign('products', $products);
         $this->assign('gmess', $gmess_model->getGmessList());
         $this->assign('categorys', $categorys);
-        $this->show(self::TPL . 'settings/banner_edit.tpl');
+        return $this->fetch('mainpage/settings/settings_banner_edit');
     }
 
     /**
